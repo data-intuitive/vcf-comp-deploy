@@ -1,0 +1,223 @@
+{
+  "metadata" : {
+    "name" : "0-Setup",
+    "user_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "D9463AC2B61F4E15B806BE669495C0E6"
+    },
+    "cell_type" : "markdown",
+    "source" : "# Setup\n\nIn this notebook, we make sure a paired set of variants is available. We provide the annotated datafiles as well for reference."
+  }, {
+    "metadata" : {
+      "id" : "96E7D50796C04924AC4E1F7F905F6F13"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Data"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6A1F73E4A2234D7DA18ABAF62CFA6D00"
+    },
+    "cell_type" : "code",
+    "source" : ":sh ls -al data/",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "total 91951\ndrwxr-xr-x 6 root   root        204 May 31 12:19 .\ndrwxrwxr-x 9 daemon daemon     4096 May 31 19:43 ..\n-rw------- 1 root   root    1860660 May 31 12:04 8122_N.vcf.gz\n-rw------- 1 root   root    1888646 May 31 12:05 8122_T.vcf.gz\n-rw------- 1 root   root   45003812 May 31 12:02 snpEff.8122_N.vcf.gz\n-rw------- 1 root   root   45398741 May 31 12:02 snpEff.8122_T.vcf.gz\n\nimport sys.process._\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/plain" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "BA9E5FE28397443D9AA9149BEAD3A23F"
+    },
+    "cell_type" : "markdown",
+    "source" : "The two files of interest are:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7C69177EC1B74A5F82B490E0ECA0342A"
+    },
+    "cell_type" : "code",
+    "source" : "val vcfN = \"data/8122_N.vcf.gz\"\nval vcfT = \"data/8122_T.vcf.gz\"",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "vcfN: String = data/8122_N.vcf.gz\nvcfT: String = data/8122_T.vcf.gz\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "CF05AD11AB834825AA16636D805EF5F6"
+    },
+    "cell_type" : "markdown",
+    "source" : "The first 5 lines of the respective `VCF` files (omitting the header information):"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab368404145-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "4CC4B4E7E5624439A1840154B718D119"
+    },
+    "cell_type" : "code",
+    "source" : "sc.textFile(vcfN).filter(!_.contains(\"##\")).map(_.split(\"\\t\")).take(5)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res5: Array[Array[String]] = Array(Array(#CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, 0), Array(1, 69428, ., T, G, 505.32, ., AC=1;AF=0.50;AN=2;BaseQRankSum=-3.890;DP=157;DS;Dels=0.00;FS=15.860;HRun=0;HaplotypeScore=5.4661;MQ=20.94;MQ0=52;MQRankSum=-0.024;QD=3.22;ReadPosRankSum=1.722;SB=-34.00, GT:AD:DP:GQ:PL, 0/1:118,39:157:99:535,0,1354), Array(1, 69511, ., A, G, 3066.29, ., AC=2;AF=1.00;AN=2;BaseQRankSum=-0.884;DP=165;Dels=0.00;FS=0.000;HRun=0;HaplotypeScore=0.9979;MQ=28.65;MQ0=21;MQRankSum=-1.078;QD=18.58;ReadPosRankSum=-0.206;SB=-923.15, GT:AD:DP:GQ:PL, 1/1:1,163:164:99:3099,310,0), Array(1, 325075, ., G, C, 41.01, ., AC=1;AF=0.50;AN=2;BaseQRankSum=-0.727;DP=84;DS;Dels=0.00;FS=0.000;HRun=0;HaplotypeScore=0.0000;MQ=6.33;MQ0=80;MQRankSum=-0.727;QD=0.49;ReadPosRankSum=0.727;..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon49f699378275986f019db1d9a67bd7b8&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;368404145&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul368404145\"><li>\n                <a href=\"#tab368404145-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab368404145-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab368404145\"><div class=\"tab-pane\" id=\"tab368404145-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon22d5e87e9dcf971fbc19f2e1daa29527&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;541530102&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon443b11d1a7cbe2282fb7e06a182507ee&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon5568c1e9eda91e2c6d1f7ee91916ae74&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab368404145-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon6eb952bb6f24518ea5562ad4b270755c&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;2126025887&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon9fcafa16831aeab41ec5bb50ca7453e7&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon5196c1ad90fdefab3a9c09e2f0a79ba5&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab927605519-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "4CC4B4E7E5624439A1840154B718D119"
+    },
+    "cell_type" : "code",
+    "source" : "sc.textFile(vcfT).filter(!_.contains(\"##\")).map(_.split(\"\\t\")).take(5)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res7: Array[Array[String]] = Array(Array(#CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, 0), Array(1, 69511, ., A, G, 2803.22, ., AC=2;AF=1.00;AN=2;DP=180;Dels=0.00;FS=0.000;HRun=0;HaplotypeScore=3.2423;MQ=25.76;MQ0=26;QD=15.57;SB=-1212.10, GT:AD:DP:GQ:PL, 1/1:0,179:180:99:2836,303,0), Array(1, 762273, ., G, A, 3902.37, ., AC=2;AF=1.00;AN=2;DP=150;DS;Dels=0.00;FS=0.000;HRun=1;HaplotypeScore=33.5057;MQ=40.02;MQ0=9;QD=26.02;SB=-1136.18, GT:AD:DP:GQ:PL, 1/1:0,150:150:99:3902,328,0), Array(1, 876499, ., A, G, 313.47, ., AC=2;AF=1.00;AN=2;DP=11;Dels=0.00;FS=0.000;HRun=6;HaplotypeScore=0.0000;MQ=60.00;MQ0=0;QD=28.50;SB=-64.05, GT:AD:DP:GQ:PL, 1/1:0,11:11:30.08:346,30,0), Array(1, 877831, ., T, C, 1634.74, ., AC=2;AF=1.00;AN=2;DP=64;Dels=0.00;FS=0.000;HRun=2;HaplotypeScore=3.7265;MQ=58...."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anond7348daaf895636065142380001fecf1&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;927605519&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul927605519\"><li>\n                <a href=\"#tab927605519-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab927605519-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab927605519\"><div class=\"tab-pane\" id=\"tab927605519-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon73bf7c5846690298f9b8ddaaf3de877a&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;1837232587&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon37273017ed8f3a6a8d997c64be41be32&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone2592d5853c345b13d0dda20f33265c9&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab927605519-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonfb82bc176b0aa7ef30a0b35b086fb563&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;1063818339&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone959e0893cc9d6cd5a23ff495444a255&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon8d7adb6436a184c9be0bad05516ae155&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "0300AC1B6E7D42008E0573069DE05C2D"
+    },
+    "cell_type" : "markdown",
+    "source" : "## SnpEff"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6277EC2932474DC1AEC963BF8E02A87A"
+    },
+    "cell_type" : "code",
+    "source" : "//val snpEffBaseDir = \"/Users/toni/Dropbox/_Janssen/CellPass/vcf-comp/snpEff/\"\nval tmpDir = \"/tmp/\"\nval snpEffBaseDir = tmpDir + \"snpEff/\"\nval snpEffVersionString = \"v4_2\"",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "tmpDir: String = /tmp/\nsnpEffBaseDir: String = /tmp/snpEff/\nsnpEffVersionString: String = v4_2\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6B65F2EC197341A8A879A4E0DD7B2B5A"
+    },
+    "cell_type" : "code",
+    "source" : ":sh apt-get install -y wget unzip",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "debconf: delaying package configuration, since apt-utils is not installed\nReading package lists...\nBuilding dependency tree...\nReading state information...\nThe following extra packages will be installed:\n  libicu52 libpsl0\nSuggested packages:\n  zip\nThe following NEW packages will be installed:\n  libicu52 libpsl0 unzip wget\n0 upgraded, 4 newly installed, 0 to remove and 21 not upgraded.\nNeed to get 7483 kB of archives.\nAfter this operation, 30.6 MB of additional disk space will be used.\nGet:1 http://httpredir.debian.org/debian/ jessie/main libicu52 amd64 52.1-8+deb8u3 [6784 kB]\nGet:2 http://httpredir.debian.org/debian/ jessie/main libpsl0 amd64 0.5.1-1 [41.6 kB]\nGet:3 http://httpredir.debian.org/debian/ jessie/main wget amd64 1.16-1 [495 kB]\nGet:4 http://httpredir.debian.org/debian/ jessie/main unzip amd64 6.0-16+deb8u2 [162 kB]\nFetched 7483 kB in 2s (2856 kB/s)\nSelecting previously unselected package libicu52:amd64.\n(Reading database ... \n(Reading database ... 5%\n(Reading database ... 10%\n(Reading database ... 15%\n(Reading database ... 20%\n(Reading database ... 25%\n(Reading database ... 30%\n(Reading database ... 35%\n(Reading database ... 40%\n(Reading database ... 45%\n(Reading database ... 50%\n(Reading database ... 55%\n(Reading database ... 60%\n(Reading database ... 65%\n(Reading database ... 70%\n(Reading database ... 75%\n(Reading database ... 80%\n(Reading database ... 85%\n(Reading database ... 90%\n(Reading database ... 95%\n(Reading database ... 100%\n(Reading database ... 11247 files and directories currently installed.)\nPreparing to unpack .../libicu52_52.1-8+deb8u3_amd64.deb ...\nUnpacking libicu52:amd64 (52.1-8+deb8u3) ...\nSelecting previously unselected package libpsl0:amd64.\nPreparing to unpack .../libpsl0_0.5.1-1_amd64.deb ...\nUnpacking libpsl0:amd64 (0.5.1-1) ...\nSelecting previously unselected package wget.\nPreparing to unpack .../archives/wget_1.16-1_amd64.deb ...\nUnpacking wget (1.16-1) ...\nSelecting previously unselected package unzip.\nPreparing to unpack .../unzip_6.0-16+deb8u2_amd64.deb ...\nUnpacking unzip (6.0-16+deb8u2) ...\nSetting up libicu52:amd64 (52.1-8+deb8u3) ...\nSetting up libpsl0:amd64 (0.5.1-1) ...\nSetting up wget (1.16-1) ...\nSetting up unzip (6.0-16+deb8u2) ...\nProcessing triggers for libc-bin (2.19-18+deb8u1) ...\n\nimport sys.process._\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/plain" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 6
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "EC30FE5830904E588DEAA28BE132DACA"
+    },
+    "cell_type" : "code",
+    "source" : "import scala.sys.process._\n\ns\"wget http://heanet.dl.sourceforge.net/project/snpeff/snpEff_${snpEffVersionString}_core.zip -P ${snpEffBaseDir}\".!\ns\"unzip ${snpEffBaseDir}snpEff_${snpEffVersionString}_core.zip -d ${tmpDir}\".!",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import scala.sys.process._\nres18: Int = 0\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 10
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5F4DAE33B1E7429785F8815D24B379F4"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 8
+    } ]
+  } ],
+  "nbformat" : 4
+}

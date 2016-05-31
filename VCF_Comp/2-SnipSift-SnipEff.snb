@@ -1,0 +1,521 @@
+{
+  "metadata" : {
+    "name" : "2-SnipSift-SnipEff",
+    "user_save_timestamp" : "1970-01-01T01:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T01:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "id" : "1877DFED847C438988829CEEEEEE00B5"
+    },
+    "cell_type" : "markdown",
+    "source" : "# SnpEff Annotations"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5279DFDC84EC4634927237DADE1B80D2"
+    },
+    "cell_type" : "code",
+    "source" : "reset(lastChanges = _.set(\"spark.app.name\", \"VCFComp-Initialization\")\n                     .set(\"spark.driver.memory\", \"6g\")\n                     .set(\"spark.driver.cores\",\"2\")\n)",
+    "outputs" : [ {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "6E5EA81AB132429D871AE252E78C0D1A"
+    },
+    "cell_type" : "markdown",
+    "source" : "## The VCF Files of interest"
+  }, {
+    "metadata" : {
+      "id" : "E6D9ABC6E58A43D48430EC34439E7E38"
+    },
+    "cell_type" : "markdown",
+    "source" : "These are the VCF file we will start off with:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "387DD44514B446EE8FE5AE7F26863736"
+    },
+    "cell_type" : "code",
+    "source" : "val vcfN = \"data/8122_N.vcf.gz\"\nval vcfT = \"data/8122_T.vcf.gz\"",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "vcfN: String = data/8122_N.vcf.gz\nvcfT: String = data/8122_T.vcf.gz\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "209250B0FA1540FA8556DDFF7C526BEA"
+    },
+    "cell_type" : "markdown",
+    "source" : "Annotated version will be stored in:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "387DD44514B446EE8FE5AE7F26863736"
+    },
+    "cell_type" : "code",
+    "source" : "val annVcfN = \"data/8122_N.ann.vcf.gz\"\nval annVcfT = \"data/8122_T.ann.vcf.gz\"",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "annVcfN: String = data/8122_N.ann.vcf.gz\nannVcfT: String = data/8122_T.ann.vcf.gz\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "6D6141BE3E32498089A368EEC6F32C16"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Load the jar files"
+  }, {
+    "metadata" : {
+      "id" : "F95BDDD0794A409CBDFD958CE7D3763A"
+    },
+    "cell_type" : "markdown",
+    "source" : "Load the appropriate jars in the `classpath`. Again we not that if you change the default directory for storing snpEff, then please update it here as well.\n\nWe do this step before downloading the database files, because updating the classpath requires a full rerun of the notebook, including downloading everything before this cell. So we apply this as soon as possible. This way we can not avoid that the package itself is downloaded again, but that is just a small file."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab874221345-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "0588C759B1D8454087311A93C1D9A3F8"
+    },
+    "cell_type" : "code",
+    "source" : ":cp \n/tmp/snpEff/snpEff.jar\n/tmp/snpEff/SnpSift.jar",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "globalScope.jars: Array[String] = [Ljava.lang.String;@68243f7c\nres8: List[String] = List(/tmp/snpEff/snpEff.jar, /tmp/snpEff/SnpSift.jar, file:/opt/docker/, file:/opt/docker/lib/common.common-0.6.3-scala-2.10.5-spark-1.6.0-hadoop-2.6.0-with-hive-with-parquet.jar)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon2da7303151230aa0ae7799c21cb3da3d&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;/tmp/snpEff/snpEff.jar&quot;},{&quot;string value&quot;:&quot;/tmp/snpEff/SnpSift.jar&quot;},{&quot;string value&quot;:&quot;file:/opt/docker/&quot;},{&quot;string value&quot;:&quot;file:/opt/docker/lib/common.common-0.6.3-scala-2.10.5-spark-1.6.0-hadoop-2.6.0-with-hive-with-parquet.jar&quot;}],&quot;genId&quot;:&quot;874221345&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul874221345\"><li>\n                <a href=\"#tab874221345-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab874221345-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab874221345\"><div class=\"tab-pane\" id=\"tab874221345-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon1430f988307c10c9253671251282c77c&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;/tmp/snpEff/snpEff.jar&quot;},{&quot;string value&quot;:&quot;/tmp/snpEff/SnpSift.jar&quot;},{&quot;string value&quot;:&quot;file:/opt/docker/&quot;},{&quot;string value&quot;:&quot;file:/opt/docker/lib/common.common-0.6.3-scala-2.10.5-spark-1.6.0-hadoop-2.6.0-with-hive-with-parquet.jar&quot;}],&quot;genId&quot;:&quot;750332957&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"string value\"],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone9c6a664af5b75f02441fa21f4833206&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone43873e9284d94d20c38a0daeaac63d3&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab874221345-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona80cfddb69c1adf8a150596e384283b2&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;/tmp/snpEff/snpEff.jar&quot;},{&quot;string value&quot;:&quot;/tmp/snpEff/SnpSift.jar&quot;},{&quot;string value&quot;:&quot;file:/opt/docker/&quot;},{&quot;string value&quot;:&quot;file:/opt/docker/lib/common.common-0.6.3-scala-2.10.5-spark-1.6.0-hadoop-2.6.0-with-hive-with-parquet.jar&quot;}],&quot;genId&quot;:&quot;642710873&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon8013cb7ce26faa564d8f3e3facb7ffc2&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonbaeeba7432ada8b793f5cfe52797200e&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "78AB8E147FD34825AC66B3F33D7BD4BC"
+    },
+    "cell_type" : "markdown",
+    "source" : "At this point, make sure you have plenty of memory available for the Scala process to use. Especially for the annotation phase, 5gb of memory is a minimum. Spark-Notebook can be started with more available memory like this:\n\n```\nbin/spark-notebook -J-Xmx6000m -J-Xms1024m\n```\n\nThis will increase the amount of memory available to the notebooks. The docker image provided with `VCF_Comp` takes care of this automatically."
+  }, {
+    "metadata" : {
+      "id" : "195A926D47D04F9B902E0D0552386E99"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Get the data necessary for annotation"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "A6CE6CF23EC747A387CE1D2671D90EF4"
+    },
+    "cell_type" : "code",
+    "source" : "// From 0-Setup\nval tmpDir = \"/tmp/\"\nval snpEffBaseDir = tmpDir + \"snpEff/\"\nval snpEffVersionString = \"v4_2\"\n// Paths\nval snpEffPath   = snpEffBaseDir\nval snpEffDbPath = snpEffBaseDir + \"db/\"\nval snpEffAll = snpEffDbPath + \"common_all_20160407.vcf.gz\"\n// the gzipped version doesn't seem to work\nval snpEffClinvar = snpEffDbPath + \"clinvar.vcf\"",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "tmpDir: String = /tmp/\nsnpEffBaseDir: String = /tmp/snpEff/\nsnpEffVersionString: String = v4_2\nsnpEffPath: String = /tmp/snpEff/\nsnpEffDbPath: String = /tmp/snpEff/db/\nsnpEffAll: String = /tmp/snpEff/db/common_all_20160407.vcf.gz\nsnpEffClinvar: String = /tmp/snpEff/db/clinvar.vcf\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "4AD0B85959144C3E90109960104ECFA1"
+    },
+    "cell_type" : "markdown",
+    "source" : "Download the annotations db and index using `wget`:\n\n```\nwget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/VCF/common_all_20160407.vcf.gz -P .../db/\nwget ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606/VCF/clinical_vcf_set/clinvar.vcf.gz -P .../db/\n```\n\nWe unzip the clinvar file because the zipped version causes trouble later in the process."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "20CCA7A2792648FEBA17B4C98DCA64D6"
+    },
+    "cell_type" : "code",
+    "source" : "import scala.sys.process._\n\ns\"wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/VCF/common_all_20160407.vcf.gz -P ${snpEffDbPath}\".!\ns\"wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/VCF/common_all_20160407.vcf.gz.tbi -P ${snpEffDbPath}\".!\ns\"wget ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh37/clinvar.vcf.gz -P ${snpEffDbPath}\".!\ns\"gunzip ${snpEffDbPath}clinvar.vcf.gz\".!",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import scala.sys.process._\nres17: Int = 1\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "1"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 9
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "ADC7391607E74D98AA8C898DE0A1053F"
+    },
+    "cell_type" : "markdown",
+    "source" : "__Expectation Management__: The above step may take over 10 minutes to complete!"
+  }, {
+    "metadata" : {
+      "id" : "9B2EE71AF07E4180A09910B3FDEACF2A"
+    },
+    "cell_type" : "markdown",
+    "source" : "- - -"
+  }, {
+    "metadata" : {
+      "id" : "46C84B3721274214A6E9EB0E5AF0B281"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Download the reference"
+  }, {
+    "metadata" : {
+      "id" : "B06DF47862FB49DF87FF22754A4E9102"
+    },
+    "cell_type" : "markdown",
+    "source" : "Import the necessary classes:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "174A0BF86D7347C281FFE567E6889649"
+    },
+    "cell_type" : "code",
+    "source" : "import ca.mcgill.mcb.pcingola.snpEffect.commandLine._\n\nval snpEffDownload = new SnpEff(Array(\"download\", \"-v\", \"GRCh37.75\"))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import ca.mcgill.mcb.pcingola.snpEffect.commandLine._\nsnpEffDownload: ca.mcgill.mcb.pcingola.snpEffect.commandLine.SnpEff = ca.mcgill.mcb.pcingola.snpEffect.commandLine.SnpEff@1054d837\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 10
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1002745926-0\"\n}"
+      },
+      "id" : "AC87EC89701540E3995210FF0CBFC4B6"
+    },
+    "cell_type" : "code",
+    "source" : "// Download the reference data\n// This data goes under $snpEffBaseDir/data\nval downloaded = snpEffDownload.run\nif (downloaded) println(\"Download succeeded, please look in \" + snpEffBaseDir + \"data\")\nelse println(\"Download not succeeded, please refer to the logs\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "id" : "B0DB55676FD545209014AF2BC9964DC5"
+    },
+    "cell_type" : "markdown",
+    "source" : "__Expectation Management:__ This step takes a lot of time. Expect over 10 minutes!"
+  }, {
+    "metadata" : {
+      "id" : "3774F8CE51594FF88D6D277962572B0E"
+    },
+    "cell_type" : "markdown",
+    "source" : "- - -"
+  }, {
+    "metadata" : {
+      "id" : "2F9DD3990C314DE68F5874EE5BE9546F"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Run snipSift"
+  }, {
+    "metadata" : {
+      "id" : "DA4B88911E3C453C83F631A56BEAD545"
+    },
+    "cell_type" : "markdown",
+    "source" : "The highlevel API is made for stdio and it's not that easy to grab it, so it seems. We go a level deeper and use the lower-level, command-specific classes:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "ABEF3836C1874CF4850FBFD8984218F2"
+    },
+    "cell_type" : "code",
+    "source" : "import java.io._\nimport collection.JavaConverters._\nimport ca.mcgill.mcb.pcingola.snpSift._\n\n/** \n  * Process the sift annotations and filtering.\n  * If no outputFile is specified a random temporary filename will be generated\n  * The output of the function is the name of that temporary file and location\n**/\ndef processSiftAnnotations(db: String, inputFile: String, outputFile:Option[String] = None, debug:Boolean = false) = {\n  val snpSift = new SnpSiftCmdAnnotate(Array(db, inputFile))\n  snpSift.setSaveOutput(true)\n  snpSift.setDebug(debug)\n  snpSift.setSuppressOutput(false)\n  val res = snpSift.run(true)\n  val tmpFile = outputFile match {\n    case None => File.createTempFile(\"tmpAnn\", \".vcf\")\n    case Some(fileName) => new File(fileName)\n  }\n  val tmpFileWriter = new PrintWriter(tmpFile)\n//  tmpFileWriter.write(res.asScala.toList.map(_.toString).mkString(\"\\n\"))\n  tmpFileWriter.write(snpSift.getOutput)\n  tmpFileWriter.close\n  tmpFile.toString\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import java.io._\nimport collection.JavaConverters._\nimport ca.mcgill.mcb.pcingola.snpSift._\nprocessSiftAnnotations: (db: String, inputFile: String, outputFile: Option[String], debug: Boolean)String\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 10
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "1477237A36A84DE38C92CDD4FAA3FEA7"
+    },
+    "cell_type" : "markdown",
+    "source" : "Step 1 is annotation with the `clinvar` db:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "5ACC14A45F2C43218248DE942A3480A6"
+    },
+    "cell_type" : "code",
+    "source" : "val tmpVcfFileN = processSiftAnnotations(snpEffClinvar, vcfN)\nval tmpVcfFileT = processSiftAnnotations(snpEffClinvar, vcfT)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "tmpVcfFileN: String = /tmp/tmpAnn4582310669529895346.vcf\ntmpVcfFileT: String = /tmp/tmpAnn4008929929288247282.vcf\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 11
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "B207002D9E594EAA822282943FABCAE5"
+    },
+    "cell_type" : "markdown",
+    "source" : "Step 2 is annotation with the `All` DB:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "117CFA95813A422F8FF269298BBA05F1"
+    },
+    "cell_type" : "code",
+    "source" : "val resultVcfFileN = processSiftAnnotations(snpEffAll, tmpVcfFileN, Some(snpEffPath + \"afterSiftN.vcf\"))\nval resultVcfFileT = processSiftAnnotations(snpEffAll, tmpVcfFileT, Some(snpEffPath + \"afterSiftT.vcf\"))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "resultVcfFileN: String = /tmp/snpEff/afterSiftN.vcf\nresultVcfFileT: String = /tmp/snpEff/afterSiftT.vcf\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 12
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "F808F5313C9545C682BBFDA7FABC883B"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Annotate the data"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4E511E41BAC543738897A02BA168D247"
+    },
+    "cell_type" : "code",
+    "source" : "import ca.mcgill.mcb.pcingola.snpEffect.commandLine.SnpEffCmdEff\nimport ca.mcgill.mcb.pcingola.snpEffect.commandLine.SnpEffCmdEff._\n\nclass SnpEffCmdEffExt extends SnpEffCmdEff {\n  def setSaveOutput(b: Boolean) = {saveOutput = b}\n\n//  override def outputFile(base:String):String = outputFileName\n  \n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import ca.mcgill.mcb.pcingola.snpEffect.commandLine.SnpEffCmdEff\nimport ca.mcgill.mcb.pcingola.snpEffect.commandLine.SnpEffCmdEff._\ndefined class SnpEffCmdEffExt\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 13
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "C1D8698BEB5A469C8C6C580E91C22358"
+    },
+    "cell_type" : "markdown",
+    "source" : "Unfortunately, the procedure we used in the sift case does not work here. The output streambuilder is not activated in the code and refactoring it would take too much time. We work around this using the possibility of the API to provide a list of input files to be annotated.\n\nAnother option would be to write the contents to a file myself, but then we do not retain the header info."
+  }, {
+    "metadata" : {
+      "id" : "915CF22EDCE541E6AADEADEED0A549C2"
+    },
+    "cell_type" : "markdown",
+    "source" : "Write the filename to be annotated to a file and load call the `parseArgs` method as follows:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "924A0B123E7A4F138DA37873D2BC042F"
+    },
+    "cell_type" : "code",
+    "source" : "import java.io._\n\ndef processEffectAnnotations(inputFile: String, debug:Boolean = false) = {\n\n  // Write inputFile to a file and provide it as argument to the annotation later\n  val writer = new PrintWriter(new File(\"fileList.txt\"))\n  writer.write(inputFile)\n  writer.close()\n\n  // Create custom object\n  val snpEffE = new SnpEffCmdEffExt\n  snpEffE.parseArgs(Array(\"GRCh37.75\", \"-fileList\", \"fileList.txt\"))\n  snpEffE.setVerbose(true)\n  snpEffE.setDebug(debug)\n  // It does not make sense to keep the output, because it is not really kept anyway...\n  snpEffE.setSaveOutput(false)\n\n  // If we can capture the output here in the notebook (including header), then switch this to true:\n  val res = snpEffE.run(false)\n  \n  val inputFileMinusSuffix = inputFile.stripSuffix(\".vcf\")\n  \n  println(s\"The output is in ${inputFileMinusSuffix}.eff.vcf\")\n  \n  inputFileMinusSuffix + \".eff.vcf\"\n\n}\n\n",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import java.io._\nprocessEffectAnnotations: (inputFile: String, debug: Boolean)String\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 15
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "5C5A94E570514E138E46B0C4ED0F65FB"
+    },
+    "cell_type" : "markdown",
+    "source" : "The following step again takes a lot of time! Take a look at the terminal window if you still have it open. You should see something like below. Please notice that there is a lot of room for distributed magic!\n\n```\nnotebook_1   | 00:16:35\tReading NextProt database from file '/tmp/snpEff/./data/GRCh37.75/nextProt.bin'\nnotebook_1   | 00:16:36\tNextProt database: 539772 markers loaded.\nnotebook_1   | 00:16:36\tAdding transcript info to NextProt markers.\nnotebook_1   | 00:16:36\tNextProt database: 539772 markers added.\nnotebook_1   | 00:16:36\t\tLoading PWMs from : /tmp/snpEff/./data/GRCh37.75/pwms.bin\nnotebook_1   | 00:16:36\t\tLoading Motifs from file '/tmp/snpEff/./data/GRCh37.75/motif.bin'\nnotebook_1   | 00:16:37\t\tMotif database: 284122 markers loaded.\nnotebook_1   | 00:16:37\t\tLoading interactions from : /tmp/snpEff/./data/GRCh37.75/interactions.bin\nnotebook_1   | 00:16:57\t\tInteractions: 1712415 added, 0 skipped.\nnotebook_1   | 00:16:57\tBuilding interval forest\nnotebook_1   | 00:17:31\tdone.\nnotebook_1   | 00:17:31\tGenome stats :\nnotebook_1   | #-----------------------------------------------\nnotebook_1   | # Genome name                : 'Homo_sapiens'\nnotebook_1   | # Genome version             : 'GRCh37.75'\nnotebook_1   | # Genome ID                  : 'GRCh37.75[14]'\nnotebook_1   | # Has protein coding info    : true\nnotebook_1   | # Has Tr. Support Level info : true\nnotebook_1   | # Genes                      : 63677\nnotebook_1   | # Protein coding genes       : 23393\nnotebook_1   | #-----------------------------------------------\nnotebook_1   | # Transcripts                : 215170\nnotebook_1   | # Avg. transcripts per gene  : 3.38\nnotebook_1   | # TSL transcripts            : 0\nnotebook_1   | #-----------------------------------------------\nnotebook_1   | # Checked transcripts        :\nnotebook_1   | #               AA sequences : 104175 ( 99.44% )\nnotebook_1   | #              DNA sequences : 179360 ( 83.36% )\n...\nnotebook_1   | #\t\t'MT'\t16569\tStandard\nnotebook_1   | #\t\t'GL000226.1'\t15008\tStandard\nnotebook_1   | #\t\t'GL000207.1'\t4262\tStandard\nnotebook_1   | #-----------------------------------------------\nnotebook_1   |\nnotebook_1   | 00:19:26\tPredicting variants\nnotebook_1   | 00:19:26\tAnalyzing file\nnotebook_1   | \tInput         : '/tmp/snpEff/afterSiftN.vcf'\nnotebook_1   | \tOutput        : '/tmp/snpEff/afterSiftN.eff.vcf'\nnotebook_1   | \tSummary (HTML): '/tmp/snpEff/afterSiftN_summary.html'\nnotebook_1   | 00:19:26\tLoading sequences for chromosome '1' from file '/tmp/snpEff/./data/GRCh37.75/sequence.1.bin'\nnotebook_1   | 00:19:46\tBuilding sequence tree for chromosome '1'\nnotebook_1   | 00:19:46\tDone. Loaded 3244 sequences.\nnotebook_1   | 00:20:00\tLoading sequences for chromosome '10' from file '/tmp/snpEff/./data/GRCh37.75/sequence.10.bin'\nnotebook_1   | 00:20:11\tBuilding sequence tree for chromosome '10'\nnotebook_1   | 00:20:11\tDone. Loaded 1369 sequences.\n...\n```"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "49B4CDEFD91749568E4FD902C42E7E7B"
+    },
+    "cell_type" : "code",
+    "source" : "val outputFileN = processEffectAnnotations(resultVcfFileN, debug=false)\nval outputFileT = processEffectAnnotations(resultVcfFileT, debug=false)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E4357B48BC9441AF88CEDE815AC16725"
+    },
+    "cell_type" : "code",
+    "source" : "s\"mv ${outputFileN} ${annVcfN}\".!\ns\"mv ${outputFileN} ${annVcfT}\".!",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res28: Int = 0\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "0"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 18
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "B729C4671ED348CF8A18951193BBF178"
+    },
+    "cell_type" : "markdown",
+    "source" : "The file is here:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "35DEF933CF2146939F90C9ED82562123"
+    },
+    "cell_type" : "code",
+    "source" : "println(resultFile)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "/tmp/snpEff/output.eff.vcf\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 19
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "C212D7C206244ECF8BFD0C75ED923558"
+    },
+    "cell_type" : "markdown",
+    "source" : "Show a snippet from the file:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "7DC5BFF9FC9145E68D6901881F6CDF97"
+    },
+    "cell_type" : "code",
+    "source" : "sc.textFile(resultFile).take(5).mkString(\"\\n\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res34: String = \n##fileformat=VCFv4.1\n##INFO=<ID=LDAF,Number=1,Type=Float,Description=\"MLE Allele Frequency Accounting for LD\">\n##INFO=<ID=AVGPOST,Number=1,Type=Float,Description=\"Average posterior probability from MaCH/Thunder\">\n##INFO=<ID=RSQ,Number=1,Type=Float,Description=\"Genotype imputation quality from MaCH/Thunder\">\n##INFO=<ID=ERATE,Number=1,Type=Float,Description=\"Per-marker Mutation rate from MaCH/Thunder\">\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "##fileformat=VCFv4.1\n##INFO=&lt;ID=LDAF,Number=1,Type=Float,Description=&quot;MLE Allele Frequency Accounting for LD&quot;&gt;\n##INFO=&lt;ID=AVGPOST,Number=1,Type=Float,Description=&quot;Average posterior probability from MaCH/Thunder&quot;&gt;\n##INFO=&lt;ID=RSQ,Number=1,Type=Float,Description=&quot;Genotype imputation quality from MaCH/Thunder&quot;&gt;\n##INFO=&lt;ID=ERATE,Number=1,Type=Float,Description=&quot;Per-marker Mutation rate from MaCH/Thunder&quot;&gt;"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 21
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "156C26FD8ED04CDEA6AFC23AD250731B"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  } ]
+}

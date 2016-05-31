@@ -1,0 +1,15 @@
+notebook:
+  image: andypetrella/spark-notebook:0.6.3-scala-2.10.5-spark-1.6.0-hadoop-2.6.0-with-hive-with-parquet
+  volumes:
+    - "./VCF_Comp:/opt/docker/notebooks/__VCF_Comp__"
+    - "./data:/opt/docker/data"
+    - "./snpEff:/tmp/snpEff"
+  ports:
+    - "9000:9000"
+    - "4040:4040"
+  working_dir: /opt/docker
+  entrypoint: ./bin/spark-notebook -J-Xmx6g -J-Xms1024m
+lightning:
+  image: lightningviz/lightning:latest
+  ports: 
+    - "3000:3000"
