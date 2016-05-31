@@ -157,7 +157,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 5
+      "execution_count" : 19
     } ]
   }, {
     "metadata" : {
@@ -167,18 +167,18 @@
       "id" : "6B65F2EC197341A8A879A4E0DD7B2B5A"
     },
     "cell_type" : "code",
-    "source" : ":sh apt-get install -y wget unzip",
+    "source" : "import scala.sys.process._\nimport scala.language.postfixOps\n\n\"which wget\" #|| \"apt-get install -y wget\" !\n\n\"which unzip\"  #|| \"apt-get install -y unzip\" !",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "debconf: delaying package configuration, since apt-utils is not installed\nReading package lists...\nBuilding dependency tree...\nReading state information...\nThe following extra packages will be installed:\n  libicu52 libpsl0\nSuggested packages:\n  zip\nThe following NEW packages will be installed:\n  libicu52 libpsl0 unzip wget\n0 upgraded, 4 newly installed, 0 to remove and 21 not upgraded.\nNeed to get 7483 kB of archives.\nAfter this operation, 30.6 MB of additional disk space will be used.\nGet:1 http://httpredir.debian.org/debian/ jessie/main libicu52 amd64 52.1-8+deb8u3 [6784 kB]\nGet:2 http://httpredir.debian.org/debian/ jessie/main libpsl0 amd64 0.5.1-1 [41.6 kB]\nGet:3 http://httpredir.debian.org/debian/ jessie/main wget amd64 1.16-1 [495 kB]\nGet:4 http://httpredir.debian.org/debian/ jessie/main unzip amd64 6.0-16+deb8u2 [162 kB]\nFetched 7483 kB in 2s (2856 kB/s)\nSelecting previously unselected package libicu52:amd64.\n(Reading database ... \n(Reading database ... 5%\n(Reading database ... 10%\n(Reading database ... 15%\n(Reading database ... 20%\n(Reading database ... 25%\n(Reading database ... 30%\n(Reading database ... 35%\n(Reading database ... 40%\n(Reading database ... 45%\n(Reading database ... 50%\n(Reading database ... 55%\n(Reading database ... 60%\n(Reading database ... 65%\n(Reading database ... 70%\n(Reading database ... 75%\n(Reading database ... 80%\n(Reading database ... 85%\n(Reading database ... 90%\n(Reading database ... 95%\n(Reading database ... 100%\n(Reading database ... 11247 files and directories currently installed.)\nPreparing to unpack .../libicu52_52.1-8+deb8u3_amd64.deb ...\nUnpacking libicu52:amd64 (52.1-8+deb8u3) ...\nSelecting previously unselected package libpsl0:amd64.\nPreparing to unpack .../libpsl0_0.5.1-1_amd64.deb ...\nUnpacking libpsl0:amd64 (0.5.1-1) ...\nSelecting previously unselected package wget.\nPreparing to unpack .../archives/wget_1.16-1_amd64.deb ...\nUnpacking wget (1.16-1) ...\nSelecting previously unselected package unzip.\nPreparing to unpack .../unzip_6.0-16+deb8u2_amd64.deb ...\nUnpacking unzip (6.0-16+deb8u2) ...\nSetting up libicu52:amd64 (52.1-8+deb8u3) ...\nSetting up libpsl0:amd64 (0.5.1-1) ...\nSetting up wget (1.16-1) ...\nSetting up unzip (6.0-16+deb8u2) ...\nProcessing triggers for libc-bin (2.19-18+deb8u1) ...\n\nimport sys.process._\n"
+      "text" : "import scala.sys.process._\nimport scala.language.postfixOps\nres54: Int = 0\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/plain" : ""
+        "text/html" : "0"
       },
       "output_type" : "execute_result",
-      "execution_count" : 6
+      "execution_count" : 28
     } ]
   }, {
     "metadata" : {
@@ -188,18 +188,18 @@
       "id" : "EC30FE5830904E588DEAA28BE132DACA"
     },
     "cell_type" : "code",
-    "source" : "import scala.sys.process._\n\ns\"wget http://heanet.dl.sourceforge.net/project/snpeff/snpEff_${snpEffVersionString}_core.zip -P ${snpEffBaseDir}\".!\ns\"unzip ${snpEffBaseDir}snpEff_${snpEffVersionString}_core.zip -d ${tmpDir}\".!",
+    "source" : "s\"test -f ${snpEffBaseDir}/snpEff_${snpEffVersionString}_core.zip\" #|| \ns\"wget http://heanet.dl.sourceforge.net/project/snpeff/snpEff_${snpEffVersionString}_core.zip -P ${snpEffBaseDir}\" !\n\ns\"unzip ${snpEffBaseDir}snpEff_${snpEffVersionString}_core.zip -d ${tmpDir}\" !",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import scala.sys.process._\nres18: Int = 0\n"
+      "text" : "res52: Int = 1\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "0"
+        "text/html" : "1"
       },
       "output_type" : "execute_result",
-      "execution_count" : 10
+      "execution_count" : 27
     } ]
   }, {
     "metadata" : {
