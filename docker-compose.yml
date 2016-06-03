@@ -8,8 +8,9 @@ notebook:
     - "9000:9000"
     - "4040:4040"
   working_dir: /opt/docker
-  entrypoint: ./bin/spark-notebook -J-Xmx6g -J-Xms1024m
+  entrypoint: ./bin/spark-notebook -J-Xmx7g # -J-Xms1024m
 lightning:
   image: lightningviz/lightning:latest
   ports: 
     - "3000:3000"
+  mem_limit: "512m"
