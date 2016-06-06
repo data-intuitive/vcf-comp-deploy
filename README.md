@@ -18,10 +18,9 @@ CONTAINER           CPU %               MEM USAGE / LIMIT     MEM %             
 Quickstart:
 
 ```
-git clone xxxx
-cd xxxx
+git clone https://github.com/data-intuitive/vcf-comp-deploy
+cd vcf-comp-deploy
 docker-compose up
 ```
 
 Now, connect to <localhost:9000> in your browser. Please note that on Mac, you may need to use `boot2docker` if you did not yet sign up for the Docker beta on Mac!
-
