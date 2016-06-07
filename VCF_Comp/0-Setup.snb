@@ -24,6 +24,48 @@
     "source" : "# Setup\n\nIn this notebook, we make sure a paired set of variants is available. We provide the annotated datafiles as well for reference."
   }, {
     "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F5C022C6BA6C45A296F199786753A879"
+    },
+    "cell_type" : "code",
+    "source" : "import scala.sys.process._\nimport scala.language.postfixOps\n\ndef shellTestToBool(shellCommand:String):Boolean = {\n      Some(shellCommand !)\n                        .map{ _ match {\n                                  case 0 => true\n                                  case _ => false }\n                            }.get\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import scala.sys.process._\nimport scala.language.postfixOps\nshellTestToBool: (shellCommand: String)Boolean\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2D0DED5DF344445382E884E80A11B4AE"
+    },
+    "cell_type" : "code",
+    "source" : "// Update this!\nval projectDir = \"./\"\n\n// Paths\nval snpEffBaseDir = projectDir + \"snpEff/\"\nval snpEffVersionString = \"v4_2\"\nval snpEffSourceZip = s\"snpEff_${snpEffVersionString}_core.zip\"\n\n// Checks\nval runningInDocker = shellTestToBool(\"test -f /.dockerenv\")\nval wgetInstalled  = shellTestToBool(\"which wget\")\nval unzipInstalled = shellTestToBool(\"which unzip\")\nval snpEffInstalled = shellTestToBool(s\"test -f ${snpEffBaseDir}${snpEffSourceZip}\")\nval snpEffBaseDirExists = shellTestToBool(s\"test -d ${snpEffBaseDir}\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "projectDir: String = ./\nsnpEffBaseDir: String = ./snpEff/\nsnpEffVersionString: String = v4_2\nsnpEffSourceZip: String = snpEff_v4_2_core.zip\nrunningInDocker: Boolean = true\nwgetInstalled: Boolean = false\nunzipInstalled: Boolean = false\nsnpEffInstalled: Boolean = false\nsnpEffBaseDirExists: Boolean = true\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2
+    } ]
+  }, {
+    "metadata" : {
       "id" : "96E7D50796C04924AC4E1F7F905F6F13"
     },
     "cell_type" : "markdown",
@@ -40,14 +82,35 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "total 91951\ndrwxr-xr-x 6 root   root        204 May 31 12:19 .\ndrwxrwxr-x 9 daemon daemon     4096 May 31 19:43 ..\n-rw------- 1 root   root    1860660 May 31 12:04 8122_N.vcf.gz\n-rw------- 1 root   root    1888646 May 31 12:05 8122_T.vcf.gz\n-rw------- 1 root   root   45003812 May 31 12:02 snpEff.8122_N.vcf.gz\n-rw------- 1 root   root   45398741 May 31 12:02 snpEff.8122_T.vcf.gz\n\nimport sys.process._\n"
+      "text" : "total 91951\ndrwxr-xr-x  6 root   root        204 May 31 12:19 .\ndrwxrwxr-x 10 daemon daemon     4096 Jun  7 12:06 ..\n-rw-------  1 root   root    1860660 May 31 12:04 8122_N.vcf.gz\n-rw-------  1 root   root    1888646 May 31 12:05 8122_T.vcf.gz\n-rw-------  1 root   root   45003812 May 31 12:02 snpEff.8122_N.vcf.gz\n-rw-------  1 root   root   45398741 May 31 12:02 snpEff.8122_T.vcf.gz\n\nimport sys.process._\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/plain" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 1
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "CFBDC3020EAD41A38F79F1886F6F036C"
+    },
+    "cell_type" : "code",
+    "source" : ":sh ls -al ./snpEff/",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "total 5\ndrwxr-xr-x  3 root   root    102 Jun  7 12:19 .\ndrwxrwxr-x 10 daemon daemon 4096 Jun  7 12:20 ..\n-rw-r--r--  1 root   root    122 Jun  7 11:45 README.md\n\nimport sys.process._\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/plain" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3
     } ]
   }, {
     "metadata" : {
@@ -143,42 +206,21 @@
       "trusted" : true,
       "input_collapsed" : false,
       "collapsed" : false,
-      "id" : "6277EC2932474DC1AEC963BF8E02A87A"
-    },
-    "cell_type" : "code",
-    "source" : "//val snpEffBaseDir = \"/Users/toni/Dropbox/_Janssen/CellPass/vcf-comp/snpEff/\"\nval tmpDir = \"/tmp/\"\nval snpEffBaseDir = tmpDir + \"snpEff/\"\nval snpEffVersionString = \"v4_2\"",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "tmpDir: String = /tmp/\nsnpEffBaseDir: String = /tmp/snpEff/\nsnpEffVersionString: String = v4_2\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 19
-    } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : false,
       "id" : "6B65F2EC197341A8A879A4E0DD7B2B5A"
     },
     "cell_type" : "code",
-    "source" : "import scala.sys.process._\nimport scala.language.postfixOps\n\n\"which wget\" #|| \"apt-get install -y wget\" !\n\n\"which unzip\"  #|| \"apt-get install -y unzip\" !",
+    "source" : "if (runningInDocker) {\n  println(\"Running in Docker, checking wget and unzip dependencies...\")\n  if (! wgetInstalled) { \n    println(\"Installing wget\")\n    \"apt-get install -y wget\"! \n  } else println(\"wget already installed\")\n  if (! unzipInstalled) { \n    println(\"Installing unzip\")\n    \"apt-get install -y unzip\"! \n  } else println(\"unzip already installed\")\n} else {\n  println(\"Not running in Docker, make sure wget and unzip are available...\")\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import scala.sys.process._\nimport scala.language.postfixOps\nres54: Int = 0\n"
+      "text" : "Running in Docker, checking wget and unzip dependencies...\nInstalling wget\nInstalling unzip\nres7: AnyVal = 0\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "0"
       },
       "output_type" : "execute_result",
-      "execution_count" : 28
+      "execution_count" : 5
     } ]
   }, {
     "metadata" : {
@@ -188,36 +230,29 @@
       "id" : "EC30FE5830904E588DEAA28BE132DACA"
     },
     "cell_type" : "code",
-    "source" : "s\"test -f ${snpEffBaseDir}/snpEff_${snpEffVersionString}_core.zip\" #|| \ns\"wget http://heanet.dl.sourceforge.net/project/snpeff/snpEff_${snpEffVersionString}_core.zip -P ${snpEffBaseDir}\" !\n\ns\"unzip ${snpEffBaseDir}snpEff_${snpEffVersionString}_core.zip -d ${tmpDir}\" !",
+    "source" : "val snpEffDownloaded = \n  if (!snpEffInstalled) {\n    println(\"Downloading from Sourceforge...\")\n    shellTestToBool(s\"wget http://heanet.dl.sourceforge.net/project/snpeff/${snpEffSourceZip} -P ${snpEffBaseDir}\")\n  } else true\n\n// If the download is not successfull, remove the stale file\nif (!snpEffDownloaded) shellTestToBool(s\"rm ${snpEffBaseDir}${snpEffSourceZip}\")\n\nif (!snpEffInstalled && snpEffDownloaded) {\n   println(\"Unzipping snpEff...\")  \n   shellTestToBool(s\"unzip ${snpEffBaseDir}${snpEffSourceZip} -d ${snpEffBaseDir}\")\n}\n\n\n\n\n",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res52: Int = 1\n"
+      "text" : "Downloading from Sourceforge...\nUnzipping snpEff...\nsnpEffDownloaded: Boolean = true\nres55: AnyVal = true\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "1"
+        "text/html" : "true"
       },
       "output_type" : "execute_result",
-      "execution_count" : 27
+      "execution_count" : 34
     } ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false,
-      "id" : "5F4DAE33B1E7429785F8815D24B379F4"
+      "collapsed" : true,
+      "id" : "32FC02C2E3F147128283B90CB9245E50"
     },
     "cell_type" : "code",
     "source" : "",
-    "outputs" : [ {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 8
-    } ]
+    "outputs" : [ ]
   } ],
   "nbformat" : 4
 }
