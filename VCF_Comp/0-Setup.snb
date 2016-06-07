@@ -230,7 +230,7 @@
       "id" : "EC30FE5830904E588DEAA28BE132DACA"
     },
     "cell_type" : "code",
-    "source" : "val snpEffDownloaded = \n  if (!snpEffInstalled) {\n    println(\"Downloading from Sourceforge...\")\n    shellTestToBool(s\"wget http://heanet.dl.sourceforge.net/project/snpeff/${snpEffSourceZip} -P ${snpEffBaseDir}\")\n  } else true\n\n// If the download is not successfull, remove the stale file\nif (!snpEffDownloaded) shellTestToBool(s\"rm ${snpEffBaseDir}${snpEffSourceZip}\")\n\nif (!snpEffInstalled && snpEffDownloaded) {\n   println(\"Unzipping snpEff...\")  \n   shellTestToBool(s\"unzip ${snpEffBaseDir}${snpEffSourceZip} -d ${snpEffBaseDir}\")\n}\n\n\n\n\n",
+    "source" : "val snpEffDownloaded = \n  if (!snpEffInstalled) {\n    println(\"Downloading from Sourceforge...\")\n    shellTestToBool(s\"wget http://heanet.dl.sourceforge.net/project/snpeff/${snpEffSourceZip} -P ${snpEffBaseDir}\")\n  } else true\n\n// If the download is not successfull, remove the stale file\nif (!snpEffDownloaded) shellTestToBool(s\"rm ${snpEffBaseDir}${snpEffSourceZip}\")\n\nif (!snpEffInstalled && snpEffDownloaded) {\n   println(\"Unzipping snpEff...\")  \n   shellTestToBool(s\"unzip ${snpEffBaseDir}${snpEffSourceZip} -d ${projectDir}\")\n}\n\n\n\n\n",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
