@@ -3,7 +3,7 @@ notebook:
   volumes:
     - "./VCF_Comp:/opt/docker/notebooks/__VCF_Comp__"
     - "./data:/opt/docker/data"
-    - "./snpEff:/tmp/snpEff"
+    - "./snpEff1:/opt/docker/snpEff"
   ports:
     - "9000:9000"
     - "4040:4040"
