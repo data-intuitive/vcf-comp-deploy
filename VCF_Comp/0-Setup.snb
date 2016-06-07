@@ -41,7 +41,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 4
+      "execution_count" : 1
     } ]
   }, {
     "metadata" : {
@@ -82,14 +82,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "total 91951\ndrwxr-xr-x  6 root   root        204 May 31 12:19 .\ndrwxrwxr-x 10 daemon daemon     4096 Jun  7 12:06 ..\n-rw-------  1 root   root    1860660 May 31 12:04 8122_N.vcf.gz\n-rw-------  1 root   root    1888646 May 31 12:05 8122_T.vcf.gz\n-rw-------  1 root   root   45003812 May 31 12:02 snpEff.8122_N.vcf.gz\n-rw-------  1 root   root   45398741 May 31 12:02 snpEff.8122_T.vcf.gz\n\nimport sys.process._\n"
+      "text" : "total 91951\ndrwxr-xr-x  6 root   root        204 May 31 12:19 .\ndrwxrwxr-x 11 daemon daemon     4096 Jun  7 19:53 ..\n-rw-------  1 root   root    1860660 May 31 12:04 8122_N.vcf.gz\n-rw-------  1 root   root    1888646 May 31 12:05 8122_T.vcf.gz\n-rw-------  1 root   root   45003812 May 31 12:02 snpEff.8122_N.vcf.gz\n-rw-------  1 root   root   45398741 May 31 12:02 snpEff.8122_T.vcf.gz\n\nimport sys.process._\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/plain" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 4
+      "execution_count" : 3
     } ]
   }, {
     "metadata" : {
@@ -103,14 +103,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "total 5\ndrwxr-xr-x  3 root   root    102 Jun  7 12:19 .\ndrwxrwxr-x 10 daemon daemon 4096 Jun  7 12:20 ..\n-rw-r--r--  1 root   root    122 Jun  7 11:45 README.md\n\nimport sys.process._\n"
+      "text" : "total 5\ndrwxr-xr-x  2 root   root     68 Jun  7 19:15 .\ndrwxrwxr-x 11 daemon daemon 4096 Jun  7 19:53 ..\n\nimport sys.process._\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/plain" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 3
+      "execution_count" : 4
     } ]
   }, {
     "metadata" : {
@@ -137,7 +137,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 2
+      "execution_count" : 5
     } ]
   }, {
     "metadata" : {
@@ -151,7 +151,7 @@
       "input_collapsed" : false,
       "collapsed" : false,
       "presentation" : {
-        "tabs_state" : "{\n  \"tab_id\": \"#tab368404145-0\"\n}",
+        "tabs_state" : "{\n  \"tab_id\": \"#tab471348600-0\"\n}",
         "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
       },
       "id" : "4CC4B4E7E5624439A1840154B718D119"
@@ -161,14 +161,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res5: Array[Array[String]] = Array(Array(#CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, 0), Array(1, 69428, ., T, G, 505.32, ., AC=1;AF=0.50;AN=2;BaseQRankSum=-3.890;DP=157;DS;Dels=0.00;FS=15.860;HRun=0;HaplotypeScore=5.4661;MQ=20.94;MQ0=52;MQRankSum=-0.024;QD=3.22;ReadPosRankSum=1.722;SB=-34.00, GT:AD:DP:GQ:PL, 0/1:118,39:157:99:535,0,1354), Array(1, 69511, ., A, G, 3066.29, ., AC=2;AF=1.00;AN=2;BaseQRankSum=-0.884;DP=165;Dels=0.00;FS=0.000;HRun=0;HaplotypeScore=0.9979;MQ=28.65;MQ0=21;MQRankSum=-1.078;QD=18.58;ReadPosRankSum=-0.206;SB=-923.15, GT:AD:DP:GQ:PL, 1/1:1,163:164:99:3099,310,0), Array(1, 325075, ., G, C, 41.01, ., AC=1;AF=0.50;AN=2;BaseQRankSum=-0.727;DP=84;DS;Dels=0.00;FS=0.000;HRun=0;HaplotypeScore=0.0000;MQ=6.33;MQ0=80;MQRankSum=-0.727;QD=0.49;ReadPosRankSum=0.727;..."
+      "text" : "res9: Array[Array[String]] = Array(Array(#CHROM, POS, ID, REF, ALT, QUAL, FILTER, INFO, FORMAT, 0), Array(1, 69428, ., T, G, 505.32, ., AC=1;AF=0.50;AN=2;BaseQRankSum=-3.890;DP=157;DS;Dels=0.00;FS=15.860;HRun=0;HaplotypeScore=5.4661;MQ=20.94;MQ0=52;MQRankSum=-0.024;QD=3.22;ReadPosRankSum=1.722;SB=-34.00, GT:AD:DP:GQ:PL, 0/1:118,39:157:99:535,0,1354), Array(1, 69511, ., A, G, 3066.29, ., AC=2;AF=1.00;AN=2;BaseQRankSum=-0.884;DP=165;Dels=0.00;FS=0.000;HRun=0;HaplotypeScore=0.9979;MQ=28.65;MQ0=21;MQRankSum=-1.078;QD=18.58;ReadPosRankSum=-0.206;SB=-923.15, GT:AD:DP:GQ:PL, 1/1:1,163:164:99:3099,310,0), Array(1, 325075, ., G, C, 41.01, ., AC=1;AF=0.50;AN=2;BaseQRankSum=-0.727;DP=84;DS;Dels=0.00;FS=0.000;HRun=0;HaplotypeScore=0.0000;MQ=6.33;MQ0=80;MQRankSum=-0.727;QD=0.49;ReadPosRankSum=0.727;..."
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon49f699378275986f019db1d9a67bd7b8&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;368404145&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul368404145\"><li>\n                <a href=\"#tab368404145-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab368404145-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab368404145\"><div class=\"tab-pane\" id=\"tab368404145-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon22d5e87e9dcf971fbc19f2e1daa29527&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;541530102&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon443b11d1a7cbe2282fb7e06a182507ee&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon5568c1e9eda91e2c6d1f7ee91916ae74&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab368404145-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon6eb952bb6f24518ea5562ad4b270755c&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;2126025887&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon9fcafa16831aeab41ec5bb50ca7453e7&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon5196c1ad90fdefab3a9c09e2f0a79ba5&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonbcdea51f907935a2739f45d930719b9b&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;471348600&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul471348600\"><li>\n                <a href=\"#tab471348600-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab471348600-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab471348600\"><div class=\"tab-pane\" id=\"tab471348600-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon81df6e3d2cbb967b64052c5c924d90a0&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;357507200&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon22f6f3cbdcb4a1a0b4cdd915223bcd5a&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon1f7ab141fed4b51932f16485f2210eb8&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab471348600-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon664a1cdf54044dc05eba1e0cfd922e82&quot;,&quot;dataInit&quot;:[{},{},{},{},{}],&quot;genId&quot;:&quot;1760325361&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonaed579d1d9b936b8cc20efba316e45c5&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon5b6fa94ce480023249f3098a2c64abb4&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 3
+      "execution_count" : 6
     } ]
   }, {
     "metadata" : {
@@ -213,14 +213,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "Running in Docker, checking wget and unzip dependencies...\nInstalling wget\nInstalling unzip\nres7: AnyVal = 0\n"
+      "text" : "Running in Docker, checking wget and unzip dependencies...\nInstalling wget\nInstalling unzip\nres11: AnyVal = 0\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "0"
       },
       "output_type" : "execute_result",
-      "execution_count" : 5
+      "execution_count" : 7
     } ]
   }, {
     "metadata" : {
@@ -230,29 +230,19 @@
       "id" : "EC30FE5830904E588DEAA28BE132DACA"
     },
     "cell_type" : "code",
-    "source" : "val snpEffDownloaded = \n  if (!snpEffInstalled) {\n    println(\"Downloading from Sourceforge...\")\n    shellTestToBool(s\"wget http://heanet.dl.sourceforge.net/project/snpeff/${snpEffSourceZip} -P ${snpEffBaseDir}\")\n  } else true\n\n// If the download is not successfull, remove the stale file\nif (!snpEffDownloaded) shellTestToBool(s\"rm ${snpEffBaseDir}${snpEffSourceZip}\")\n\nif (!snpEffInstalled && snpEffDownloaded) {\n   println(\"Unzipping snpEff...\")  \n   shellTestToBool(s\"unzip ${snpEffBaseDir}${snpEffSourceZip} -d ${projectDir}\")\n}\n\n\n\n\n",
+    "source" : "val snpEffDownloaded = \n  if (!snpEffInstalled) {\n    println(\"Downloading from Sourceforge...\")\n    shellTestToBool(s\"wget http://heanet.dl.sourceforge.net/project/snpeff/${snpEffSourceZip} -P ${snpEffBaseDir}\")\n  } else true\n\n// If the download is not successfull, remove the stale file\nif (!snpEffDownloaded) shellTestToBool(s\"rm ${snpEffBaseDir}${snpEffSourceZip}\")\n\nif (!snpEffInstalled && snpEffDownloaded) {\n   println(\"Unzipping snpEff...\")  \n   shellTestToBool(s\"unzip ${snpEffBaseDir}${snpEffSourceZip} -d ${projectDir}\")\n}",
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "Downloading from Sourceforge...\nUnzipping snpEff...\nsnpEffDownloaded: Boolean = true\nres55: AnyVal = true\n"
+      "text" : "Downloading from Sourceforge...\nUnzipping snpEff...\nsnpEffDownloaded: Boolean = true\nres13: AnyVal = true\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "true"
       },
       "output_type" : "execute_result",
-      "execution_count" : 34
+      "execution_count" : 8
     } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : true,
-      "id" : "32FC02C2E3F147128283B90CB9245E50"
-    },
-    "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
   } ],
   "nbformat" : 4
 }
