@@ -1,6 +1,8 @@
 #!/bin/sh 
- 
-INSTALL_DIR="/root/tst" 
+
+
+CURRENT_DIR=`pwd` 
+INSTALL_DIR=$CURRENT_DIR 
 SN="spark-notebook-0.6.3-scala-2.10.5-spark-1.6.1-hadoop-2.6.0-with-hive-with-parquet.tgz" 
 export NOTEBOOKS_DIR=VCF_Comp 
  
@@ -16,7 +18,7 @@ else
     echo "... Package downloaded" 
   fi 
   echo "... Untarring archive"  
-  tar xzf /tmp/$SN --directory $INSTALL_DIR --strip-components=1 
+  tar xzf /tmp/$SN --directory $INSTALL_DIR --strip-components=1 --exclude='README.md' 
 fi 
   
 cd $INSTALL_DIR 
