@@ -1,3 +1,11 @@
 snpEff/*
 !snpEff/README.md
+nohup*
+bin
+conf
+RUNNING_PID
+lib
+logs
+notebooks
+share
 
