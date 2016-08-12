@@ -1,0 +1,648 @@
+{
+  "metadata" : {
+    "name" : "Filtering and other funct's",
+    "user_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : null,
+    "customRepos" : null,
+    "customDeps" : null,
+    "customImports" : null,
+    "customArgs" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "86245CEFE8424C07BADB875146B40CBD"
+    },
+    "cell_type" : "code",
+    "source" : ":remote-repo bintray-tmoerman % default % http://dl.bintray.com/tmoerman/maven % maven",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res2: String = Resolver added: bintray-tmoerman % default % http://dl.bintray.com/tmoerman/maven % maven!\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/plain" : "Resolver added: bintray-tmoerman % default % http://dl.bintray.com/tmoerman/maven % maven!"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1484610269-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "A3047ABCB33444CC9FACA2E912311391"
+    },
+    "cell_type" : "code",
+    "source" : ":dp org.tmoerman % vcf-comp_2.10 % 0.5.0\n- org.tmoerman      % adam-fx       %   _\n:dp org.tmoerman % adam-fx_2.10 % 0.6.0\n:dp org.bdgenomics.adam % adam-core % 0.19.0\n- org.apache.hadoop % hadoop-client %   _\n- org.apache.spark  %     _         %   _\n- org.scala-lang    %     _         %   _\n- org.scoverage     %     _         %   _\n- joda-time         %     _         %   _",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "globalScope.jars: Array[String] = [Ljava.lang.String;@d31294f8\nres6: List[String] = List(/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tmoerman/vcf-comp_2.10/jars/vcf-comp_2.10-0.5.0.jar, /tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.beust/jcommander/jars/jcommander-1.27.jar, /tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-httpclient/commons-httpclient/jars/commons-httpclient-3.1.jar, /tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.avro/avro/bundles/avro-1.7.7.jar, /tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.slf4j/slf4j-log4j12/jars/slf4j-log4j12-1.7.12.jar, /tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.thoughtworks.paraname..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonbb01b3050426cbd18074eafb45624d09&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tmoerman/vcf-comp_2.10/jars/vcf-comp_2.10-0.5.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.beust/jcommander/jars/jcommander-1.27.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-httpclient/commons-httpclient/jars/commons-httpclient-3.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.avro/avro/bundles/avro-1.7.7.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.slf4j/slf4j-log4j12/jars/slf4j-log4j12-1.7.12.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.3.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.xerial.snappy/snappy-java/bundles/snappy-java-1.1.1.6.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.netflix.servo/servo-core/jars/servo-core-0.10.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.seqdoop/hadoop-bam/jars/hadoop-bam-7.1.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.google.code.findbugs/annotations/jars/annotations-2.0.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-avro/jars/parquet-avro-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/it.unimi.dsi/fastutil/jars/fastutil-6.6.5.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.12.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.objenesis/objenesis/jars/objenesis-2.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-cli_2.10/jars/utils-cli_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.testng/testng/jars/testng-6.8.8.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-column/jars/parquet-column-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.beanshell/bsh/jars/bsh-2.0b4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.netflix.servo/servo-internal/jars/servo-internal-0.10.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.codehaus.jackson/jackson-mapper-asl/jars/jackson-mapper-asl-1.9.13.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.scalaz/scalaz-core_2.10/bundles/scalaz-core_2.10-7.0.6.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-hadoop/jars/parquet-hadoop-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.ant/ant/jars/ant-1.8.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.github.samtools/htsjdk/jars/htsjdk-1.139.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-io/commons-io/jars/commons-io-1.3.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.adam/adam-apis_2.10/jars/adam-apis_2.10-0.19.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-common/jars/parquet-common-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.adam/adam-core_2.10/jars/adam-core_2.10-0.19.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-encoding/jars/parquet-encoding-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.bdg-formats/bdg-formats/jars/bdg-formats-0.7.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.esotericsoftware.kryo/kryo/bundles/kryo-2.24.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/log4j/log4j/bundles/log4j-1.2.17.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-metrics_2.10/jars/utils-metrics_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-io_2.10/jars/utils-io_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-logging/commons-logging/jars/commons-logging-1.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.5.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.codehaus.jackson/jackson-core-asl/jars/jackson-core-asl-1.9.13.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tukaani/xz/jars/xz-1.5.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-jackson/jars/parquet-jackson-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-misc_2.10/jars/utils-misc_2.10-0.2.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.google.guava/guava/bundles/guava-16.0.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-codec/commons-codec/jars/commons-codec-1.9.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-scala_2.10/jars/parquet-scala_2.10-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tmoerman/adam-fx_2.10/jars/adam-fx_2.10-0.6.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/args4j/args4j/bundles/args4j-2.0.31.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.commons/commons-jexl/jars/commons-jexl-2.1.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.8.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-format/jars/parquet-format-2.3.0-incubating.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.4.3.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.esotericsoftware.minlog/minlog/jars/minlog-1.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.commons/commons-compress/jars/commons-compress-1.4.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-cli/commons-cli/jars/commons-cli-1.2.jar&quot;},{&quot;string value&quot;:&quot;file:/root/vcf-comp-deploy/&quot;},{&quot;string value&quot;:&quot;file:/root/vcf-comp-deploy/lib/common.common-0.6.3-scala-2.10.5-spark-1.6.1-hadoop-2.6.0-with-hive-with-parquet.jar&quot;}],&quot;genId&quot;:&quot;1484610269&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul1484610269\"><li>\n                <a href=\"#tab1484610269-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab1484610269-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab1484610269\"><div class=\"tab-pane\" id=\"tab1484610269-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon6722031c4d23b3660cc6aa31433a33a9&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tmoerman/vcf-comp_2.10/jars/vcf-comp_2.10-0.5.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.beust/jcommander/jars/jcommander-1.27.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-httpclient/commons-httpclient/jars/commons-httpclient-3.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.avro/avro/bundles/avro-1.7.7.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.slf4j/slf4j-log4j12/jars/slf4j-log4j12-1.7.12.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.3.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.xerial.snappy/snappy-java/bundles/snappy-java-1.1.1.6.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.netflix.servo/servo-core/jars/servo-core-0.10.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.seqdoop/hadoop-bam/jars/hadoop-bam-7.1.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.google.code.findbugs/annotations/jars/annotations-2.0.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-avro/jars/parquet-avro-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/it.unimi.dsi/fastutil/jars/fastutil-6.6.5.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.12.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.objenesis/objenesis/jars/objenesis-2.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-cli_2.10/jars/utils-cli_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.testng/testng/jars/testng-6.8.8.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-column/jars/parquet-column-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.beanshell/bsh/jars/bsh-2.0b4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.netflix.servo/servo-internal/jars/servo-internal-0.10.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.codehaus.jackson/jackson-mapper-asl/jars/jackson-mapper-asl-1.9.13.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.scalaz/scalaz-core_2.10/bundles/scalaz-core_2.10-7.0.6.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-hadoop/jars/parquet-hadoop-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.ant/ant/jars/ant-1.8.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.github.samtools/htsjdk/jars/htsjdk-1.139.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-io/commons-io/jars/commons-io-1.3.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.adam/adam-apis_2.10/jars/adam-apis_2.10-0.19.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-common/jars/parquet-common-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.adam/adam-core_2.10/jars/adam-core_2.10-0.19.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-encoding/jars/parquet-encoding-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.bdg-formats/bdg-formats/jars/bdg-formats-0.7.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.esotericsoftware.kryo/kryo/bundles/kryo-2.24.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/log4j/log4j/bundles/log4j-1.2.17.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-metrics_2.10/jars/utils-metrics_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-io_2.10/jars/utils-io_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-logging/commons-logging/jars/commons-logging-1.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.5.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.codehaus.jackson/jackson-core-asl/jars/jackson-core-asl-1.9.13.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tukaani/xz/jars/xz-1.5.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-jackson/jars/parquet-jackson-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-misc_2.10/jars/utils-misc_2.10-0.2.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.google.guava/guava/bundles/guava-16.0.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-codec/commons-codec/jars/commons-codec-1.9.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-scala_2.10/jars/parquet-scala_2.10-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tmoerman/adam-fx_2.10/jars/adam-fx_2.10-0.6.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/args4j/args4j/bundles/args4j-2.0.31.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.commons/commons-jexl/jars/commons-jexl-2.1.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.8.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-format/jars/parquet-format-2.3.0-incubating.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.4.3.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.esotericsoftware.minlog/minlog/jars/minlog-1.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.commons/commons-compress/jars/commons-compress-1.4.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-cli/commons-cli/jars/commons-cli-1.2.jar&quot;},{&quot;string value&quot;:&quot;file:/root/vcf-comp-deploy/&quot;},{&quot;string value&quot;:&quot;file:/root/vcf-comp-deploy/lib/common.common-0.6.3-scala-2.10.5-spark-1.6.1-hadoop-2.6.0-with-hive-with-parquet.jar&quot;}],&quot;genId&quot;:&quot;1065263443&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"string value\"],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonf2a47361df863b8389991c90e4f3dfc6&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon766389a4c6d516d6b86130a5624e5b82&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab1484610269-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonbe0457f0a017d75eba89cdbec901fe55&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tmoerman/vcf-comp_2.10/jars/vcf-comp_2.10-0.5.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.beust/jcommander/jars/jcommander-1.27.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-httpclient/commons-httpclient/jars/commons-httpclient-3.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.avro/avro/bundles/avro-1.7.7.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.slf4j/slf4j-log4j12/jars/slf4j-log4j12-1.7.12.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.3.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.xerial.snappy/snappy-java/bundles/snappy-java-1.1.1.6.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.netflix.servo/servo-core/jars/servo-core-0.10.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.seqdoop/hadoop-bam/jars/hadoop-bam-7.1.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.google.code.findbugs/annotations/jars/annotations-2.0.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-avro/jars/parquet-avro-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/it.unimi.dsi/fastutil/jars/fastutil-6.6.5.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.12.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.objenesis/objenesis/jars/objenesis-2.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-cli_2.10/jars/utils-cli_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.testng/testng/jars/testng-6.8.8.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-column/jars/parquet-column-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.beanshell/bsh/jars/bsh-2.0b4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.netflix.servo/servo-internal/jars/servo-internal-0.10.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.codehaus.jackson/jackson-mapper-asl/jars/jackson-mapper-asl-1.9.13.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.scalaz/scalaz-core_2.10/bundles/scalaz-core_2.10-7.0.6.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-hadoop/jars/parquet-hadoop-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.ant/ant/jars/ant-1.8.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.github.samtools/htsjdk/jars/htsjdk-1.139.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-io/commons-io/jars/commons-io-1.3.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.adam/adam-apis_2.10/jars/adam-apis_2.10-0.19.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-common/jars/parquet-common-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.adam/adam-core_2.10/jars/adam-core_2.10-0.19.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-encoding/jars/parquet-encoding-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.bdg-formats/bdg-formats/jars/bdg-formats-0.7.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.esotericsoftware.kryo/kryo/bundles/kryo-2.24.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/log4j/log4j/bundles/log4j-1.2.17.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-metrics_2.10/jars/utils-metrics_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-io_2.10/jars/utils-io_2.10-0.2.4.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-logging/commons-logging/jars/commons-logging-1.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.5.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.codehaus.jackson/jackson-core-asl/jars/jackson-core-asl-1.9.13.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tukaani/xz/jars/xz-1.5.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-jackson/jars/parquet-jackson-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.bdgenomics.utils/utils-misc_2.10/jars/utils-misc_2.10-0.2.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.google.guava/guava/bundles/guava-16.0.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-codec/commons-codec/jars/commons-codec-1.9.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-scala_2.10/jars/parquet-scala_2.10-1.8.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.tmoerman/adam-fx_2.10/jars/adam-fx_2.10-0.6.0.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/args4j/args4j/bundles/args4j-2.0.31.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.commons/commons-jexl/jars/commons-jexl-2.1.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.ant/ant-launcher/jars/ant-launcher-1.8.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.parquet/parquet-format/jars/parquet-format-2.3.0-incubating.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.4.3.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/com.esotericsoftware.minlog/minlog/jars/minlog-1.2.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/org.apache.commons/commons-compress/jars/commons-compress-1.4.1.jar&quot;},{&quot;string value&quot;:&quot;/tmp/spark-notebook/repo/545b03af-46fa-468e-9b7b-8b8f4c665b4a/cache/commons-cli/commons-cli/jars/commons-cli-1.2.jar&quot;},{&quot;string value&quot;:&quot;file:/root/vcf-comp-deploy/&quot;},{&quot;string value&quot;:&quot;file:/root/vcf-comp-deploy/lib/common.common-0.6.3-scala-2.10.5-spark-1.6.1-hadoop-2.6.0-with-hive-with-parquet.jar&quot;}],&quot;genId&quot;:&quot;1107112323&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon19d74431387c00713d1cae7e13a8842c&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonfca5bf2d6ade37e5d9d27454d245240f&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "0B911AB33DA244D085A143909EBB215A"
+    },
+    "cell_type" : "code",
+    "source" : "reset(lastChanges = _.set(\"spark.app.name\", \"My VCF analysis\")\n                     .set(\"spark.serializer\", \"org.apache.spark.serializer.KryoSerializer\")\n                     .set(\"spark.kryo.registrator\", \"org.tmoerman.adam.fx.serialization.AdamFxKryoRegistrator\")\n                     .set(\"spark.kryoserializer.buffer\", \"32m\")\n                     .set(\"spark.kryoserializer.buffer.max value\", \"128\")\n                     .set(\"spark.kryo.referenceTracking\", \"true\"))",
+    "outputs" : [ {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "BF0914934B5049C68BFF281DD716651A"
+    },
+    "cell_type" : "code",
+    "source" : "import scala.language.implicitConversions\n\nimport org.bdgenomics.adam.rdd.ADAMContext._\nimport org.tmoerman.vcf.comp.VcfComparisonContext._\nimport org.tmoerman.vcf.comp.core.Model._\nimport org.tmoerman.vcf.comp.viz.SparkNoteBookDimpleGraphs._\n\nimport org.tmoerman.adam.fx.avro.AnnotatedGenotype\n\nimplicit def toDimpleChart(chart: DimpleChart) = chart match {\n  case DimpleChart(data, js, s) => DiyChart(data, js, maxPoints = chart.maxPoints, sizes = s)\n}",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import scala.language.implicitConversions\nimport org.bdgenomics.adam.rdd.ADAMContext._\nimport org.tmoerman.vcf.comp.VcfComparisonContext._\nimport org.tmoerman.vcf.comp.core.Model._\nimport org.tmoerman.vcf.comp.viz.SparkNoteBookDimpleGraphs._\nimport org.tmoerman.adam.fx.avro.AnnotatedGenotype\ntoDimpleChart: (chart: org.tmoerman.vcf.comp.viz.SparkNoteBookDimpleGraphs.DimpleChart)notebook.front.widgets.DiyChart[List[Any]]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "1687ECC51A7A44A7ADE8E6DD2CCFDD83"
+    },
+    "cell_type" : "code",
+    "source" : "val workDir = \"data/\"\n\n// Version Thomas\nval tumor  = workDir + \"snpEff.8122_T.vcf.gz\"\nval normal = workDir + \"snpEff.8122_N.vcf.gz\"",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "workDir: String = data/\ntumor: String = data/snpEff.8122_T.vcf.gz\nnormal: String = data/snpEff.8122_N.vcf.gz\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "4748876F0F5142678DDF3168DD81DF96"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Extraction of Gene names from snpEff annotations"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E332A0C8AEEC4AD6B2CCA0BDF66D4190"
+    },
+    "cell_type" : "code",
+    "source" : "import org.tmoerman.adam.fx.avro.AnnotatedGenotype\nimport org.tmoerman.adam.fx.snpeff.SnpEffContext._\nimport org.tmoerman.adam.fx.snpeff.SnpEffAnnotationsParser._\nimport org.tmoerman.vcf.comp.VcfComparisonContextFunctions\n\nimplicit def pimpSparkContext(sc: SparkContext): VcfComparisonContextFunctions = new VcfComparisonContextFunctions(sc)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.tmoerman.adam.fx.avro.AnnotatedGenotype\nimport org.tmoerman.adam.fx.snpeff.SnpEffContext._\nimport org.tmoerman.adam.fx.snpeff.SnpEffAnnotationsParser._\nimport org.tmoerman.vcf.comp.VcfComparisonContextFunctions\npimpSparkContext: (sc: org.apache.spark.SparkContext)org.tmoerman.vcf.comp.VcfComparisonContextFunctions\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 6
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "96F4A113823F429E8EC6492A400C7F86"
+    },
+    "cell_type" : "code",
+    "source" : "val genotypes = sc.loadAnnotatedGenotypes(tumor, None)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "genotypes: org.apache.spark.rdd.RDD[org.tmoerman.adam.fx.avro.AnnotatedGenotype] = MapPartitionsRDD[1] at flatMap at SnpEffContext.scala:94\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 7
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "921CED34F0C44268832600B789358B0B"
+    },
+    "cell_type" : "markdown",
+    "source" : "Example extraction of gene. Multiple genes may occur at the same location, so use sets."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab626497874-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "B858162483CC447A843C51E3A63B295C"
+    },
+    "cell_type" : "code",
+    "source" : "genotypes.take(1).head.getAnnotations.getFunctionalAnnotations.map(_.getGeneID).toSet",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res14: scala.collection.immutable.Set[String] = Set(ENSG00000186092)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "Set(ENSG00000186092)"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 8
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "F3A14FEDE2A7402783A12DA2729B0D13"
+    },
+    "cell_type" : "markdown",
+    "source" : "Matching for genes can be done like this:"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab547611665-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "8C7184E0C81E4A8D84EE3DB2CE59A57A"
+    },
+    "cell_type" : "code",
+    "source" : "val selection = genotypes.filter(x => x.getAnnotations.getFunctionalAnnotations.map(_.getGeneID).toSet.contains(\"ENSG00000186092\"))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "selection: org.apache.spark.rdd.RDD[org.tmoerman.adam.fx.avro.AnnotatedGenotype] = MapPartitionsRDD[2] at filter at <console>:90\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 9
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "97177ED3E3F84AE5991343B7F894AB7D"
+    },
+    "cell_type" : "code",
+    "source" : "selection.map(_.getGenotype).toVariantContext().saveAsVcf(\"file:///root/vcf-comp-deploy/data/vcfgOutputFile1.vcf\", coalesceTo = Some(1))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res25: org.apache.spark.rdd.RDD[org.bdgenomics.adam.models.VariantContext] = MapPartitionsRDD[41] at map at VariationRDDFunctions.scala:144\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "MapPartitionsRDD[41] at map at VariationRDDFunctions.scala:144"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 14
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1220015138-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "6A1B7B4376294C39BA0B1453F046CD56"
+    },
+    "cell_type" : "code",
+    "source" : "sc.textFile(\"data/vcfgOutputFile.vcf\").filter(!_.contains(\"##\")).take(5)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res21: Array[String] = Array(#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t0, 1\t69511\t.\tA\tG\t.\t.\t.\tGT:AD:DP:GQ:PL\t1/1:0,179:180:99:256,256,0)\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonbc3f4cd4d06cc0d196b784cb236d092e&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO\\tFORMAT\\t0&quot;},{&quot;string value&quot;:&quot;1\\t69511\\t.\\tA\\tG\\t.\\t.\\t.\\tGT:AD:DP:GQ:PL\\t1/1:0,179:180:99:256,256,0&quot;}],&quot;genId&quot;:&quot;1220015138&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul1220015138\"><li>\n                <a href=\"#tab1220015138-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab1220015138-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab1220015138\"><div class=\"tab-pane\" id=\"tab1220015138-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon343fe045b86536c22bd3ca66e8bcc031&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO\\tFORMAT\\t0&quot;},{&quot;string value&quot;:&quot;1\\t69511\\t.\\tA\\tG\\t.\\t.\\t.\\tGT:AD:DP:GQ:PL\\t1/1:0,179:180:99:256,256,0&quot;}],&quot;genId&quot;:&quot;869252716&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"string value\"],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anond07edd73517c1db5d429b4a48a56bfb6&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon34ff931ce9b6c01f60c18aa5aa7688b8&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab1220015138-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonc73fa6dacdc7b4bba6b5bbeef163e4d1&quot;,&quot;dataInit&quot;:[{&quot;string value&quot;:&quot;#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO\\tFORMAT\\t0&quot;},{&quot;string value&quot;:&quot;1\\t69511\\t.\\tA\\tG\\t.\\t.\\t.\\tGT:AD:DP:GQ:PL\\t1/1:0,179:180:99:256,256,0&quot;}],&quot;genId&quot;:&quot;105367906&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon667c6f319ed8d108875f9d1b19d6daf1&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon9dd4436feea99c4748b0faa50aa23d4b&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 12
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "E9A3F4D2418A4912943571AAD0453E60"
+    },
+    "cell_type" : "code",
+    "source" : "import scala.sys.process._\nimport scala.language.postfixOps\n\ndef shellTestToBool(shellCommand:String):Boolean = {\n      Some(shellCommand !)\n                        .map{ _ match {\n                                  case 0 => true\n                                  case _ => false }\n                            }.get\n}\n\nshellTestToBool(s\"cp data/vcfgOutputFile1.vcf/part-r-00000 notebooks/vcfFile.vcf\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import scala.sys.process._\nimport scala.language.postfixOps\nshellTestToBool: (shellCommand: String)Boolean\nres39: Boolean = true\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "true"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 21
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "695E4E9BEC454D949F4DAB76FB851605"
+    },
+    "cell_type" : "markdown",
+    "source" : "The resulting file can be found [here](tst.vcf)."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "F85000E097C4487D836ABDC09B1248AB"
+    },
+    "cell_type" : "code",
+    "source" : "<a href=\"edit/tst.vcf\" download=\"awsaivirl1015/edit/TestVCFfile.vcf\">VCF File</a>",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res45: scala.xml.Elem = <a href=\"edit/tst.vcf\" download=\"awsaivirl1015/edit/TestVCFfile.vcf\">VCF File</a>\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<a href=\"edit/tst.vcf\" download=\"awsaivirl1015/edit/TestVCFfile.vcf\">VCF File</a>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 24
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1020823633-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "65E2A71EEC934456BA0C8AD63BE3823B"
+    },
+    "cell_type" : "code",
+    "source" : "genotypes.map{case (x) => Try(x.getAnnotations).getOrElse(\"OEPS\")}.take(1)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res128: Array[Comparable[_ >: org.apache.avro.specific.SpecificRecord with String <: Object]] = Array({\"functionalAnnotations\": [{\"allele\": \"G\", \"annotations\": [\"missense_variant\"], \"impact\": \"MODERATE\", \"geneName\": \"OR4F5\", \"geneID\": \"ENSG00000186092\", \"featureType\": \"transcript\", \"featureID\": \"ENST00000335137\", \"transcriptBiotype\": \"protein_coding\", \"rankTotal\": {\"rank\": 1, \"total\": 1}, \"HGSV_c\": \"c.421A>G\", \"HGSV_p\": \"p.Thr141Ala\", \"cDNAPositionToLength\": {\"rank\": 421, \"total\": 918}, \"CDSPositionToLength\": {\"rank\": 421, \"total\": 918}, \"proteinPositionToLength\": {\"rank\": 141, \"total\": 305}, \"distanceToFeature\": null, \"errorsWarningsInfo\": null}, {\"allele\": \"G\", \"annotations\": [\"sequence_feature\"], \"impact\": \"LOW\", \"geneName\": \"OR4F5\", \"geneID\": \"ENSG00000186092\", \"featureType\": \"disul..."
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona21f96c24ee5edbad82964aa092dcd0a&quot;,&quot;dataInit&quot;:[{&quot;clinvarAnnotations&quot;:null,&quot;nonsenseMediatedDecay&quot;:&quot;[]&quot;,&quot;dbSnpAnnotations&quot;:null,&quot;lossOfFunction&quot;:&quot;[]&quot;,&quot;functionalAnnotations&quot;:&quot;[{\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;missense_variant\\&quot;], \\&quot;impact\\&quot;: \\&quot;MODERATE\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;transcript\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: \\&quot;p.Thr141Ala\\&quot;, \\&quot;cDNAPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 421, \\&quot;total\\&quot;: 918}, \\&quot;CDSPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 421, \\&quot;total\\&quot;: 918}, \\&quot;proteinPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 141, \\&quot;total\\&quot;: 305}, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}, {\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;sequence_feature\\&quot;], \\&quot;impact\\&quot;: \\&quot;LOW\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;disulfide_bond\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: null, \\&quot;cDNAPositionToLength\\&quot;: null, \\&quot;CDSPositionToLength\\&quot;: null, \\&quot;proteinPositionToLength\\&quot;: null, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}, {\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;sequence_feature\\&quot;], \\&quot;impact\\&quot;: \\&quot;LOW\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;transmembrane_region:Transmembrane_region\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: null, \\&quot;cDNAPositionToLength\\&quot;: null, \\&quot;CDSPositionToLength\\&quot;: null, \\&quot;proteinPositionToLength\\&quot;: null, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}]&quot;}],&quot;genId&quot;:&quot;1020823633&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <div>\n          <ul class=\"nav nav-tabs\" id=\"ul1020823633\"><li>\n                <a href=\"#tab1020823633-0\"><i class=\"fa fa-table\"/></a>\n              </li><li>\n                <a href=\"#tab1020823633-1\"><i class=\"fa fa-cubes\"/></a>\n              </li></ul>\n\n          <div class=\"tab-content\" id=\"tab1020823633\"><div class=\"tab-pane\" id=\"tab1020823633-0\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon0656113fa6fa3bea367f5e6206c2257e&quot;,&quot;dataInit&quot;:[{&quot;clinvarAnnotations&quot;:null,&quot;nonsenseMediatedDecay&quot;:&quot;[]&quot;,&quot;dbSnpAnnotations&quot;:null,&quot;lossOfFunction&quot;:&quot;[]&quot;,&quot;functionalAnnotations&quot;:&quot;[{\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;missense_variant\\&quot;], \\&quot;impact\\&quot;: \\&quot;MODERATE\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;transcript\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: \\&quot;p.Thr141Ala\\&quot;, \\&quot;cDNAPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 421, \\&quot;total\\&quot;: 918}, \\&quot;CDSPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 421, \\&quot;total\\&quot;: 918}, \\&quot;proteinPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 141, \\&quot;total\\&quot;: 305}, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}, {\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;sequence_feature\\&quot;], \\&quot;impact\\&quot;: \\&quot;LOW\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;disulfide_bond\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: null, \\&quot;cDNAPositionToLength\\&quot;: null, \\&quot;CDSPositionToLength\\&quot;: null, \\&quot;proteinPositionToLength\\&quot;: null, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}, {\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;sequence_feature\\&quot;], \\&quot;impact\\&quot;: \\&quot;LOW\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;transmembrane_region:Transmembrane_region\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: null, \\&quot;cDNAPositionToLength\\&quot;: null, \\&quot;CDSPositionToLength\\&quot;: null, \\&quot;proteinPositionToLength\\&quot;: null, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}]&quot;}],&quot;genId&quot;:&quot;861612345&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"functionalAnnotations\",\"lossOfFunction\",\"nonsenseMediatedDecay\",\"dbSnpAnnotations\",\"clinvarAnnotations\"],\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon040fa1319eaa65e4108b2080c4f71c34&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon8f8908a917416853da5c2b55826d8395&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div><div class=\"tab-pane\" id=\"tab1020823633-1\">\n              <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anond3600553b58dc7f38f5ac529c5fc8bd4&quot;,&quot;dataInit&quot;:[{&quot;clinvarAnnotations&quot;:null,&quot;nonsenseMediatedDecay&quot;:&quot;[]&quot;,&quot;dbSnpAnnotations&quot;:null,&quot;lossOfFunction&quot;:&quot;[]&quot;,&quot;functionalAnnotations&quot;:&quot;[{\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;missense_variant\\&quot;], \\&quot;impact\\&quot;: \\&quot;MODERATE\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;transcript\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: \\&quot;p.Thr141Ala\\&quot;, \\&quot;cDNAPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 421, \\&quot;total\\&quot;: 918}, \\&quot;CDSPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 421, \\&quot;total\\&quot;: 918}, \\&quot;proteinPositionToLength\\&quot;: {\\&quot;rank\\&quot;: 141, \\&quot;total\\&quot;: 305}, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}, {\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;sequence_feature\\&quot;], \\&quot;impact\\&quot;: \\&quot;LOW\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;disulfide_bond\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: null, \\&quot;cDNAPositionToLength\\&quot;: null, \\&quot;CDSPositionToLength\\&quot;: null, \\&quot;proteinPositionToLength\\&quot;: null, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}, {\\&quot;allele\\&quot;: \\&quot;G\\&quot;, \\&quot;annotations\\&quot;: [\\&quot;sequence_feature\\&quot;], \\&quot;impact\\&quot;: \\&quot;LOW\\&quot;, \\&quot;geneName\\&quot;: \\&quot;OR4F5\\&quot;, \\&quot;geneID\\&quot;: \\&quot;ENSG00000186092\\&quot;, \\&quot;featureType\\&quot;: \\&quot;transmembrane_region:Transmembrane_region\\&quot;, \\&quot;featureID\\&quot;: \\&quot;ENST00000335137\\&quot;, \\&quot;transcriptBiotype\\&quot;: \\&quot;protein_coding\\&quot;, \\&quot;rankTotal\\&quot;: {\\&quot;rank\\&quot;: 1, \\&quot;total\\&quot;: 1}, \\&quot;HGSV_c\\&quot;: \\&quot;c.421A&gt;G\\&quot;, \\&quot;HGSV_p\\&quot;: null, \\&quot;cDNAPositionToLength\\&quot;: null, \\&quot;CDSPositionToLength\\&quot;: null, \\&quot;proteinPositionToLength\\&quot;: null, \\&quot;distanceToFeature\\&quot;: null, \\&quot;errorsWarningsInfo\\&quot;: null}]&quot;}],&quot;genId&quot;:&quot;929284098&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pivotChart'], \n      function(playground, _magicpivotChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpivotChart,\n    \"o\": {\"width\":600,\"height\":400,\"derivedAttributes\":{},\"extraOptions\":{}}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonb870ac7123c2ea963741132422120495&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon20c20b5be74daac2decf54506463dc2c&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>\n              </div></div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 77
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "14EACACFC0454DB4812AB8CD5EB2F108"
+    },
+    "cell_type" : "code",
+    "source" : "genotypes.filter(x => x.getAnnotations.getFunctionalAnnotations.map(_.getGeneID).toSet.contains(\"ENSG00000186092\"))\n         .save(\"exported_subset.vcf\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "<console>:93: error: value save is not a member of org.apache.spark.rdd.RDD[org.tmoerman.adam.fx.avro.AnnotatedGenotype]\npossible cause: maybe a semicolon is missing before `value save'?\n                       .save(\"exported_subset.vcf\")\n                        ^\n"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "AA63E720272543618ADD014016CC0A01"
+    },
+    "cell_type" : "code",
+    "source" : "new org.bdgenomics.adam.rdd.variation.VariantRDD(rdd.map(_.variant.variant))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "<console>:86: error: type VariantRDD is not a member of package org.bdgenomics.adam.rdd.variation\n              new org.bdgenomics.adam.rdd.variation.VariantRDD(rdd.map(_.variant.variant))\n                                                    ^\n"
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8F15E02F7BDC44858105FDEF74CA9DCC"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 40
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "8FC7A3FB80E643B08D783329F1DEF109"
+    },
+    "cell_type" : "code",
+    "source" : "genotypes.adamParquetSave(\"data/parquetOutput1.adam\")\nsc.loadGenotypes(\"data/parquetOutput1.adam\").toVariantContext.saveAsVcf(\"testWrite.vcf\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times, most recent failure: Lost task 0.0 in stage 15.0 (TID 15, localhost): java.lang.ClassCastException: org.tmoerman.adam.fx.avro.AnnotatedGenotype cannot be cast to org.bdgenomics.formats.avro.Genotype\n\tat org.bdgenomics.adam.rdd.variation.GenotypeRDDFunctions$$anonfun$10.apply(VariationRDDFunctions.scala:151)\n\tat org.apache.spark.rdd.RDD$$anonfun$keyBy$1$$anonfun$apply$56.apply(RDD.scala:1492)\n\tat org.apache.spark.rdd.RDD$$anonfun$keyBy$1$$anonfun$apply$56.apply(RDD.scala:1492)\n\tat scala.collection.Iterator$$anon$11.next(Iterator.scala:328)\n\tat org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:149)\n\tat org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:73)\n\tat org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:41)\n\tat org.apache.spark.scheduler.Task.run(Task.scala:89)\n\tat org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:214)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)\n\tat java.lang.Thread.run(Thread.java:745)\n\nDriver stacktrace:\n\tat org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1431)\n\tat org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1419)\n\tat org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1418)\n\tat scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)\n\tat scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:47)\n\tat org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:1418)\n\tat org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:799)\n\tat org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:799)\n\tat scala.Option.foreach(Option.scala:236)\n\tat org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:799)\n\tat org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:1640)\n\tat org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:1599)\n\tat org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:1588)\n\tat org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:48)\n\tat org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:620)\n\tat org.apache.spark.SparkContext.runJob(SparkContext.scala:1832)\n\tat org.apache.spark.SparkContext.runJob(SparkContext.scala:1845)\n\tat org.apache.spark.SparkContext.runJob(SparkContext.scala:1858)\n\tat org.apache.spark.SparkContext.runJob(SparkContext.scala:1929)\n\tat org.apache.spark.rdd.RDD$$anonfun$collect$1.apply(RDD.scala:927)\n\tat org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:150)\n\tat org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:111)\n\tat org.apache.spark.rdd.RDD.withScope(RDD.scala:316)\n\tat org.apache.spark.rdd.RDD.collect(RDD.scala:926)\n\tat org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions.getCallsetSamples(VariationRDDFunctions.scala:67)\n\tat org.bdgenomics.adam.rdd.variation.VariantContextRDDFunctions.saveAsVcf(VariationRDDFunctions.scala:92)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:94)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:102)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:104)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:106)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:108)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:110)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:112)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:114)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:116)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:118)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:120)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:122)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:124)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:126)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:128)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:130)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:132)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:134)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:136)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:138)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:140)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:142)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:144)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:146)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:148)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:150)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:152)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:154)\n\tat $iwC$$iwC$$iwC$$iwC$$iwC.<init>(<console>:156)\n\tat $iwC$$iwC$$iwC$$iwC.<init>(<console>:158)\n\tat $iwC$$iwC$$iwC.<init>(<console>:160)\n\tat $iwC$$iwC.<init>(<console>:162)\n\tat $iwC.<init>(<console>:164)\n\tat <init>(<console>:166)\n\tat .<init>(<console>:170)\n\tat .<clinit>(<console>)\n\tat .<init>(<console>:7)\n\tat .<clinit>(<console>)\n\tat $print(<console>)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:606)\n\tat org.apache.spark.repl.SparkIMain$ReadEvalPrint.call(SparkIMain.scala:1065)\n\tat org.apache.spark.repl.SparkIMain$Request.loadAndRun(SparkIMain.scala:1346)\n\tat org.apache.spark.repl.SparkIMain.loadAndRunReq$1(SparkIMain.scala:840)\n\tat org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:871)\n\tat org.apache.spark.repl.SparkIMain.interpret(SparkIMain.scala:819)\n\tat notebook.kernel.Repl$$anonfun$6.apply(Repl.scala:200)\n\tat notebook.kernel.Repl$$anonfun$6.apply(Repl.scala:200)\n\tat scala.util.DynamicVariable.withValue(DynamicVariable.scala:57)\n\tat scala.Console$.withOut(Console.scala:126)\n\tat notebook.kernel.Repl.evaluate(Repl.scala:199)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$27.replEvaluate$1(ReplCalculator.scala:401)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$27.apply(ReplCalculator.scala:414)\n\tat notebook.client.ReplCalculator$$anonfun$10$$anon$1$$anonfun$27.apply(ReplCalculator.scala:395)\n\tat scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)\n\tat scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:40)\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:397)\n\tat scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)\n\tat scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)\n\tat scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)\n\tat scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)\nCaused by: java.lang.ClassCastException: org.tmoerman.adam.fx.avro.AnnotatedGenotype cannot be cast to org.bdgenomics.formats.avro.Genotype\n\tat org.bdgenomics.adam.rdd.variation.GenotypeRDDFunctions$$anonfun$10.apply(VariationRDDFunctions.scala:151)\n\tat org.apache.spark.rdd.RDD$$anonfun$keyBy$1$$anonfun$apply$56.apply(RDD.scala:1492)\n\tat org.apache.spark.rdd.RDD$$anonfun$keyBy$1$$anonfun$apply$56.apply(RDD.scala:1492)\n\tat scala.collection.Iterator$$anon$11.next(Iterator.scala:328)\n\tat org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:149)\n\tat org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:73)\n\tat org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:41)\n\tat org.apache.spark.scheduler.Task.run(Task.scala:89)\n\tat org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:214)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)\n\tat java.lang.Thread.run(Thread.java:745)\n\n"
+    } ]
+  }, {
+    "metadata" : {
+      "id" : "B253D759F5354952A707C683B5B3C2DE"
+    },
+    "cell_type" : "markdown",
+    "source" : "## Examples Thomas"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1007859833-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "2C7F2EAEB7BF4CD88EBBE4C666FB6F79"
+    },
+    "cell_type" : "code",
+    "source" : "val vcfDir = \"/opt/docker/data/tumor.normal/\"\nval bedDir = \"/opt/docker/data/bed/\"",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "vcfDir: String = /opt/docker/data/tumor.normal/\nbedDir: String = /opt/docker/data/bed/\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 6
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6888886A3B684AE99D587BDD958174F6"
+    },
+    "cell_type" : "code",
+    "source" : "val qcParams = new ComparisonParams(labels = (\"TUMOR\", \"NORMAL\")) // parameters\n\nval qcComparison = sc.startQcComparison(tumor, normal, qcParams) // a Spark RDD\n                     .cache()                                    // cache the RDD",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "qcParams: org.tmoerman.vcf.comp.core.Model.ComparisonParams = ComparisonParams((TUMOR,NORMAL),(0.0,0.0),(1,1),false,<function1>,<function1>)\nqcComparison: org.apache.spark.rdd.RDD[(org.tmoerman.vcf.comp.core.Model.Label, org.bdgenomics.adam.models.VariantContext)] = UnionRDD[78] at $plus$plus at QcComparison.scala:34\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 36
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "CDAEC0E5EE0042F5998BB9968B3DCC13"
+    },
+    "cell_type" : "code",
+    "source" : "qcComparison.snpCountByContig\n            .groupedBarChart(x_title = \"SNP count by contig\",\n                             x_order = true)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res55: org.tmoerman.vcf.comp.viz.SparkNoteBookDimpleGraphs.DimpleChart = DimpleChart\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon2ccb0b3d5aa59d39fd6f1c597aadcf47&quot;,&quot;dataInit&quot;:[{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;9&quot;,&quot;count&quot;:1361},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;1&quot;,&quot;count&quot;:3304},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;20&quot;,&quot;count&quot;:844},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;12&quot;,&quot;count&quot;:1564},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;19&quot;,&quot;count&quot;:2607},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;21&quot;,&quot;count&quot;:476},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;1&quot;,&quot;count&quot;:3376},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;13&quot;,&quot;count&quot;:547},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;Y&quot;,&quot;count&quot;:12},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;11&quot;,&quot;count&quot;:2300},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;22&quot;,&quot;count&quot;:733},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;2&quot;,&quot;count&quot;:2197},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;12&quot;,&quot;count&quot;:1520},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;7&quot;,&quot;count&quot;:1522},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;16&quot;,&quot;count&quot;:1387},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;18&quot;,&quot;count&quot;:549},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;17&quot;,&quot;count&quot;:1916},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;8&quot;,&quot;count&quot;:1054},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;4&quot;,&quot;count&quot;:1245},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;15&quot;,&quot;count&quot;:1100},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;10&quot;,&quot;count&quot;:1328},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;X&quot;,&quot;count&quot;:471},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;14&quot;,&quot;count&quot;:1010},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;21&quot;,&quot;count&quot;:507},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;15&quot;,&quot;count&quot;:1127},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;11&quot;,&quot;count&quot;:2334},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;6&quot;,&quot;count&quot;:2051},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;20&quot;,&quot;count&quot;:741},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;4&quot;,&quot;count&quot;:1265},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;Y&quot;,&quot;count&quot;:9},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;2&quot;,&quot;count&quot;:2130},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;9&quot;,&quot;count&quot;:1347},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;10&quot;,&quot;count&quot;:1366},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;13&quot;,&quot;count&quot;:518},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;22&quot;,&quot;count&quot;:799},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;18&quot;,&quot;count&quot;:532},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;14&quot;,&quot;count&quot;:1027},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;3&quot;,&quot;count&quot;:2113},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;8&quot;,&quot;count&quot;:1112},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;7&quot;,&quot;count&quot;:1514},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;19&quot;,&quot;count&quot;:2468},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;5&quot;,&quot;count&quot;:1422},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;16&quot;,&quot;count&quot;:1426},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;17&quot;,&quot;count&quot;:2025},{&quot;label&quot;:&quot;NORMAL&quot;,&quot;projection&quot;:&quot;5&quot;,&quot;count&quot;:1467},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;X&quot;,&quot;count&quot;:565},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;6&quot;,&quot;count&quot;:1989},{&quot;label&quot;:&quot;TUMOR&quot;,&quot;projection&quot;:&quot;3&quot;,&quot;count&quot;:2106}],&quot;genId&quot;:&quot;1687929839&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/diyChart'], \n      function(playground, _magicdiyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicdiyChart,\n    \"o\": {\"js\":\"var js = \\n    function(data, headers, chart) {\\n      chart.setBounds(60, 30, 600, 400);\\n\\n      var x = chart.addCategoryAxis(\\\"x\\\", [\\\"projection\\\", \\\"label\\\"]);\\n      x.title = \\\"SNP count by contig\\\";\\n      x.addOrderRule(\\\"projection\\\");\\n\\n      var y = chart.addMeasureAxis(\\\"y\\\", \\\"count\\\");\\n      y.title = \\\"count\\\";\\n      y.tickFormat = \\\".f\\\";\\n\\n      var s = chart.addSeries([\\\"label\\\"], dimple.plot.bar)\\n      s.addOrderRule(\\\"label\\\");\\n\\n      if (true) {\\n        chart.addLegend(600, 10, 100, 300, \\\"right\\\");\\n      }\\n\\n      chart.draw();\\n    };\",\"headers\":[\"label\",\"projection\",\"count\"],\"width\":750,\"height\":550}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon25ba9793c160b0396cc59cb0d0a22225&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon13c06028eae8d287c9d30f6d053dc780&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 37
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "48714BEF7492480386721BA225965C5C"
+    },
+    "cell_type" : "code",
+    "source" : "val snpParams = new ComparisonParams(labels = (\"TUMOR\", \"NORMAL\"))\n\nval snpComparison = sc.startSnpComparison(tumor, normal, snpParams) // a Spark RDD\n                      .cache()                                      // cache the RDD        ",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "snpParams: org.tmoerman.vcf.comp.core.Model.ComparisonParams = ComparisonParams((TUMOR,NORMAL),(0.0,0.0),(1,1),false,<function1>,<function1>)\nsnpComparison: org.apache.spark.rdd.RDD[org.tmoerman.vcf.comp.core.SnpComparison.OccurrenceRow[org.tmoerman.adam.fx.avro.AnnotatedGenotype]] = MapPartitionsRDD[98] at map at SnpComparison.scala:126\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 38
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "6CE31F653A8C41968202B3166CF2D8AD"
+    },
+    "cell_type" : "code",
+    "source" : "snpComparison.readDepthDistribution(step = 5)\n             .lineChart(width = 700,\n                        x_title = \"read depth distribution\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res58: org.tmoerman.vcf.comp.viz.SparkNoteBookDimpleGraphs.DimpleChart = DimpleChart\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon753bd261fad348e62af2c9d1f0de7b21&quot;,&quot;dataInit&quot;:[{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:127,&quot;count&quot;:114},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:107,&quot;count&quot;:343},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:192,&quot;count&quot;:55},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:157,&quot;count&quot;:92},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:237,&quot;count&quot;:29},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:32,&quot;count&quot;:359},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:92,&quot;count&quot;:173},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:212,&quot;count&quot;:67},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:137,&quot;count&quot;:116},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:122,&quot;count&quot;:313},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:27,&quot;count&quot;:200},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:227,&quot;count&quot;:32},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:117,&quot;count&quot;:147},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:237,&quot;count&quot;:101},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:222,&quot;count&quot;:55},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:247,&quot;count&quot;:259},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:242,&quot;count&quot;:40},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:122,&quot;count&quot;:218},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:207,&quot;count&quot;:50},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:177,&quot;count&quot;:133},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:102,&quot;count&quot;:295},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:222,&quot;count&quot;:21},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:157,&quot;count&quot;:103},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:77,&quot;count&quot;:420},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:182,&quot;count&quot;:104},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:52,&quot;count&quot;:205},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:2,&quot;count&quot;:40},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:152,&quot;count&quot;:165},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:162,&quot;count&quot;:159},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:47,&quot;count&quot;:200},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:137,&quot;count&quot;:201},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:102,&quot;count&quot;:296},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:167,&quot;count&quot;:66},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:42,&quot;count&quot;:430},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:12,&quot;count&quot;:166},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:167,&quot;count&quot;:201},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:2,&quot;count&quot;:552},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:7,&quot;count&quot;:498},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:77,&quot;count&quot;:216},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:22,&quot;count&quot;:212},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:107,&quot;count&quot;:278},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:172,&quot;count&quot;:119},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:57,&quot;count&quot;:371},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:162,&quot;count&quot;:155},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:142,&quot;count&quot;:90},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:127,&quot;count&quot;:216},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:202,&quot;count&quot;:124},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:202,&quot;count&quot;:44},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:197,&quot;count&quot;:48},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:227,&quot;count&quot;:37},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:92,&quot;count&quot;:180},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:152,&quot;count&quot;:210},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:127,&quot;count&quot;:244},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:227,&quot;count&quot;:127},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:42,&quot;count&quot;:192},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:2,&quot;count&quot;:614},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:42,&quot;count&quot;:213},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:72,&quot;count&quot;:404},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:92,&quot;count&quot;:275},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:22,&quot;count&quot;:338},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:222,&quot;count&quot;:112},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:82,&quot;count&quot;:169},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:137,&quot;count&quot;:246},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:182,&quot;count&quot;:42},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:17,&quot;count&quot;:425},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:82,&quot;count&quot;:190},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:97,&quot;count&quot;:299},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:247,&quot;count&quot;:259},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:127,&quot;count&quot;:259},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:27,&quot;count&quot;:458},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:197,&quot;count&quot;:42},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:242,&quot;count&quot;:47},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:147,&quot;count&quot;:101},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:147,&quot;count&quot;:236},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:237,&quot;count&quot;:161},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:232,&quot;count&quot;:89},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:252,&quot;count&quot;:146},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:217,&quot;count&quot;:68},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:112,&quot;count&quot;:259},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:12,&quot;count&quot;:409},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:17,&quot;count&quot;:162},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:52,&quot;count&quot;:352},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:157,&quot;count&quot;:189},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:72,&quot;count&quot;:174},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:87,&quot;count&quot;:295},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:237,&quot;count&quot;:43},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:7,&quot;count&quot;:376},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:177,&quot;count&quot;:71},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:167,&quot;count&quot;:143},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:37,&quot;count&quot;:461},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:252,&quot;count&quot;:38},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:187,&quot;count&quot;:54},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:67,&quot;count&quot;:374},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:227,&quot;count&quot;:89},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:32,&quot;count&quot;:363},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:192,&quot;count&quot;:111},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:22,&quot;count&quot;:198},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:217,&quot;count&quot;:118},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:242,&quot;count&quot;:209},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:37,&quot;count&quot;:183},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:172,&quot;count&quot;:153},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:242,&quot;count&quot;:127},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:52,&quot;count&quot;:431},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:157,&quot;count&quot;:154},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:217,&quot;count&quot;:38},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:37,&quot;count&quot;:356},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:22,&quot;count&quot;:461},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:67,&quot;count&quot;:219},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:12,&quot;count&quot;:444},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:207,&quot;count&quot;:77},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:192,&quot;count&quot;:132},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:42,&quot;count&quot;:397},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:97,&quot;count&quot;:372},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:232,&quot;count&quot;:29},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:202,&quot;count&quot;:39},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:192,&quot;count&quot;:56},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:12,&quot;count&quot;:212},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:232,&quot;count&quot;:116},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:212,&quot;count&quot;:97},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:62,&quot;count&quot;:362},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:87,&quot;count&quot;:179},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:117,&quot;count&quot;:249},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:162,&quot;count&quot;:78},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:57,&quot;count&quot;:208},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:172,&quot;count&quot;:155},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:97,&quot;count&quot;:145},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:52,&quot;count&quot;:220},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:17,&quot;count&quot;:166},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:92,&quot;count&quot;:301},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:42,&quot;count&quot;:362},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:172,&quot;count&quot;:64},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:117,&quot;count&quot;:153},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:47,&quot;count&quot;:195},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:222,&quot;count&quot;:31},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:77,&quot;count&quot;:334},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:137,&quot;count&quot;:107},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:142,&quot;count&quot;:181},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:132,&quot;count&quot;:228},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:102,&quot;count&quot;:164},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:32,&quot;count&quot;:204},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:232,&quot;count&quot;:86},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:207,&quot;count&quot;:41},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:202,&quot;count&quot;:84},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:32,&quot;count&quot;:191},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:167,&quot;count&quot;:125},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:227,&quot;count&quot;:69},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:62,&quot;count&quot;:376},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:152,&quot;count&quot;:106},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:252,&quot;count&quot;:277},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:112,&quot;count&quot;:330},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:187,&quot;count&quot;:50},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:117,&quot;count&quot;:322},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:7,&quot;count&quot;:525},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:72,&quot;count&quot;:224},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:247,&quot;count&quot;:471},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:62,&quot;count&quot;:224},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:107,&quot;count&quot;:135},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:127,&quot;count&quot;:121},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:147,&quot;count&quot;:174},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:87,&quot;count&quot;:404},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:237,&quot;count&quot;:84},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:102,&quot;count&quot;:347},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:102,&quot;count&quot;:155},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:87,&quot;count&quot;:187},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:177,&quot;count&quot;:157},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:192,&quot;count&quot;:93},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:47,&quot;count&quot;:393},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:72,&quot;count&quot;:322},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:147,&quot;count&quot;:186},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:187,&quot;count&quot;:123},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:117,&quot;count&quot;:239},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:142,&quot;count&quot;:236},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:167,&quot;count&quot;:75},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:67,&quot;count&quot;:445},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:57,&quot;count&quot;:459},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:112,&quot;count&quot;:136},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:12,&quot;count&quot;:444},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:197,&quot;count&quot;:95},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:37,&quot;count&quot;:348},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:177,&quot;count&quot;:137},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:152,&quot;count&quot;:163},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:217,&quot;count&quot;:31},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:182,&quot;count&quot;:59},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:97,&quot;count&quot;:269},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:182,&quot;count&quot;:177},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:92,&quot;count&quot;:374},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:77,&quot;count&quot;:319},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:252,&quot;count&quot;:135},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:62,&quot;count&quot;:469},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:62,&quot;count&quot;:202},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:147,&quot;count&quot;:101},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:132,&quot;count&quot;:119},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:47,&quot;count&quot;:368},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:202,&quot;count&quot;:87},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:177,&quot;count&quot;:64},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:122,&quot;count&quot;:219},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:82,&quot;count&quot;:309},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:187,&quot;count&quot;:101},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:17,&quot;count&quot;:375},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:7,&quot;count&quot;:170},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:142,&quot;count&quot;:172},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:122,&quot;count&quot;:127},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:132,&quot;count&quot;:199},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:207,&quot;count&quot;:86},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:82,&quot;count&quot;:314},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:47,&quot;count&quot;:457},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:172,&quot;count&quot;:76},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:27,&quot;count&quot;:341},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:37,&quot;count&quot;:225},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:212,&quot;count&quot;:114},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:7,&quot;count&quot;:138},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:107,&quot;count&quot;:156},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:152,&quot;count&quot;:106},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:107,&quot;count&quot;:253},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:252,&quot;count&quot;:43},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:122,&quot;count&quot;:121},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:112,&quot;count&quot;:241},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:2,&quot;count&quot;:236},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:27,&quot;count&quot;:217},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:67,&quot;count&quot;:239},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:57,&quot;count&quot;:172},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:137,&quot;count&quot;:164},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:2,&quot;count&quot;:39},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:82,&quot;count&quot;:404},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:242,&quot;count&quot;:114},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:247,&quot;count&quot;:98},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:162,&quot;count&quot;:200},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:52,&quot;count&quot;:350},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:182,&quot;count&quot;:127},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:162,&quot;count&quot;:85},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:132,&quot;count&quot;:294},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:17,&quot;count&quot;:371},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:217,&quot;count&quot;:81},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:197,&quot;count&quot;:144},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:212,&quot;count&quot;:37},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:157,&quot;count&quot;:192},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:132,&quot;count&quot;:131},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:27,&quot;count&quot;:373},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:22,&quot;count&quot;:350},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:72,&quot;count&quot;:364},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:87,&quot;count&quot;:287},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:32,&quot;count&quot;:438},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:57,&quot;count&quot;:332},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:232,&quot;count&quot;:38},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:207,&quot;count&quot;:113},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:112,&quot;count&quot;:149},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:67,&quot;count&quot;:315},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:142,&quot;count&quot;:119},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:212,&quot;count&quot;:38},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:187,&quot;count&quot;:149},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:197,&quot;count&quot;:81},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:247,&quot;count&quot;:78},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:222,&quot;count&quot;:93},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:77,&quot;count&quot;:194},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:97,&quot;count&quot;:162}],&quot;genId&quot;:&quot;2017765150&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/diyChart'], \n      function(playground, _magicdiyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicdiyChart,\n    \"o\": {\"js\":\"var js = \\n    function(data, headers, chart) {\\n      chart.setBounds(60, 30, 700, 300);\\n\\n      var x = chart.addMeasureAxis(\\\"x\\\", [\\\"projection\\\"]);\\n      x.title = \\\"read depth distribution\\\";\\n      x.overrideMin = 0.0;\\n      x.tickFormat = \\\".f\\\";\\n\\n      var y = chart.addMeasureAxis(\\\"y\\\", \\\"count\\\");\\n      y.title = \\\"count\\\";\\n      y.overrideMin = 0.0;\\n      y.tickFormat = \\\".f\\\";\\n\\n      var s = chart.addSeries([\\\"projection\\\", \\\"category\\\"], dimple.plot.line)\\n      s.addOrderRule(\\\"category\\\");\\n      if (false) {\\n        s.interpolation = \\\"cardinal\\\";\\n      }\\n\\n      if (true) {\\n        chart.addLegend(700, 10, 100, 300, \\\"right\\\");\\n      }\\n\\n      chart.draw();\\n    }\\n    ;\",\"headers\":[\"category\",\"projection\",\"count\"],\"width\":850,\"height\":450}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anon8815ebdd0fe4ed615601ff499488e1c0&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anond7d6f3ec9f1a58951ea757116e8b8dc1&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 39
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "F96F7EF1570C452DBD8C368859EFFDC1"
+    },
+    "cell_type" : "code",
+    "source" : "import org.bdgenomics.adam.models.ReferenceRegion\n\nval bedFile = bedDir + \"/TruSeq_Exome_b37.bed\"\n\n// if we have one feature file in our analysis, we can make it implicit and it will get picked up \n// automatically by filterByGene, filterByGenePredicate, filterByFeaturePredicate.\nimplicit val featureRDD = sc.loadBED(bedFile).keyBy(ReferenceRegion(_))\n\nfeatureRDD",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.bdgenomics.adam.models.ReferenceRegion\nbedFile: String = /opt/docker/data/bed//TruSeq_Exome_b37.bed\nfeatureRDD: org.apache.spark.rdd.RDD[(org.bdgenomics.adam.models.ReferenceRegion, org.bdgenomics.formats.avro.Feature)] = MapPartitionsRDD[55] at keyBy at <console>:79\nres25: org.apache.spark.rdd.RDD[(org.bdgenomics.adam.models.ReferenceRegion, org.bdgenomics.formats.avro.Feature)] = MapPartitionsRDD[55] at keyBy at <console>:79\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "MapPartitionsRDD[55] at keyBy at &lt;console&gt;:79"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 15
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2BB25A63AE874A1D98FEA013EA3CF402"
+    },
+    "cell_type" : "code",
+    "source" : "val hoxies = snpComparison.filterByGenePredicate((gene: String) => gene.toLowerCase.startsWith(\"hox\")).cache",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "hoxies: org.apache.spark.rdd.RDD[org.tmoerman.vcf.comp.core.SnpComparison.OccurrenceRow[org.tmoerman.adam.fx.avro.AnnotatedGenotype]] = MapPartitionsRDD[85] at values at SnpComparisonRDDFunctions.scala:233\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 20
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "4BD8EB9168F5454388A87F5EF188F62F"
+    },
+    "cell_type" : "code",
+    "source" : "hoxies.baseChangeCount.groupedBarChart()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res45: org.tmoerman.vcf.comp.viz.SparkNoteBookDimpleGraphs.DimpleChart = DimpleChart\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon68ed7e8f8d704058b2d39d0d02c96f53&quot;,&quot;dataInit&quot;:[{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:&quot;A-&gt;G&quot;,&quot;count&quot;:2},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:&quot;T-&gt;A&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:&quot;A-&gt;G&quot;,&quot;count&quot;:2},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:&quot;T-&gt;G&quot;,&quot;count&quot;:4},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:&quot;G-&gt;T&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:&quot;A-&gt;G&quot;,&quot;count&quot;:2},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:&quot;G-&gt;T&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:&quot;T-&gt;G&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:&quot;G-&gt;A&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:&quot;T-&gt;C&quot;,&quot;count&quot;:2},{&quot;category&quot;:&quot;TUMOR-discordant&quot;,&quot;projection&quot;:&quot;T-&gt;C&quot;,&quot;count&quot;:2},{&quot;category&quot;:&quot;NORMAL-discordant&quot;,&quot;projection&quot;:&quot;T-&gt;G&quot;,&quot;count&quot;:4},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:&quot;G-&gt;T&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:&quot;T-&gt;C&quot;,&quot;count&quot;:4},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:&quot;A-&gt;C&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;TUMOR-unique&quot;,&quot;projection&quot;:&quot;C-&gt;T&quot;,&quot;count&quot;:4},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:&quot;C-&gt;T&quot;,&quot;count&quot;:4},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:&quot;G-&gt;A&quot;,&quot;count&quot;:1},{&quot;category&quot;:&quot;concordant&quot;,&quot;projection&quot;:&quot;C-&gt;T&quot;,&quot;count&quot;:2},{&quot;category&quot;:&quot;NORMAL-unique&quot;,&quot;projection&quot;:&quot;G-&gt;A&quot;,&quot;count&quot;:3}],&quot;genId&quot;:&quot;822987550&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/diyChart'], \n      function(playground, _magicdiyChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicdiyChart,\n    \"o\": {\"js\":\"var js = \\n    function(data, headers, chart) {\\n      chart.setBounds(60, 30, 500, 300);\\n\\n      var x = chart.addCategoryAxis(\\\"x\\\", [\\\"projection\\\", \\\"category\\\"]);\\n      x.title = \\\"projection\\\";\\n\\n      var y = chart.addMeasureAxis(\\\"y\\\", \\\"count\\\");\\n      y.title = \\\"count\\\";\\n      y.tickFormat = \\\".f\\\";\\n\\n      var s = chart.addSeries([\\\"category\\\"], dimple.plot.bar)\\n      s.addOrderRule(\\\"category\\\");\\n\\n      if (true) {\\n        chart.addLegend(500, 10, 100, 300, \\\"right\\\");\\n      }\\n\\n      chart.draw();\\n    };\",\"headers\":[\"category\",\"projection\",\"count\"],\"width\":650,\"height\":450}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anone64613a14668c053d018cabf75d73c35&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p> <span style=\"color:red\"><p data-bind=\"text: value\"><script data-this=\"{&quot;valueId&quot;:&quot;anonf6cfbe665bb5a0213f4f132a9916edeb&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/\nreq(\n['observable', 'knockout'],\nfunction (O, ko) {\n  ko.applyBindings({\n      value: O.makeObservable(valueId)\n    },\n    this\n  );\n});\n        /*]]>*/</script></p></span>\n        <div>\n        </div>\n      </div></div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 26
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "id" : "2BB25A63AE874A1D98FEA013EA3CF402"
+    },
+    "cell_type" : "code",
+    "source" : "val brcas_pred = snpComparison.filterByGenePredicate((gene: String) => gene.toLowerCase.startsWith(\"brca\")).cache\n\n// we can also explicitly specify the featureRDD that contains Feature by Region tuples.\nval brcas_vals = snpComparison.filterByGene(\"BRCA1\", \"BRCA2\")(featureRDD).cache",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "brcas_pred: org.apache.spark.rdd.RDD[org.tmoerman.vcf.comp.core.SnpComparison.OccurrenceRow[org.tmoerman.adam.fx.avro.AnnotatedGenotype]] = MapPartitionsRDD[193] at values at SnpComparisonRDDFunctions.scala:233\nbrcas_vals: org.apache.spark.rdd.RDD[org.tmoerman.vcf.comp.core.SnpComparison.OccurrenceRow[org.tmoerman.adam.fx.avro.AnnotatedGenotype]] = MapPartitionsRDD[208] at values at SnpComparisonRDDFunctions.scala:233\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 35
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false,
+      "presentation" : {
+        "tabs_state" : "{\n  \"tab_id\": \"#tab1092568320-0\"\n}",
+        "pivot_chart_state" : "{\n  \"hiddenAttributes\": [],\n  \"menuLimit\": 200,\n  \"cols\": [],\n  \"rows\": [],\n  \"vals\": [],\n  \"exclusions\": {},\n  \"inclusions\": {},\n  \"unusedAttrsVertical\": 85,\n  \"autoSortUnusedAttrs\": false,\n  \"inclusionsInfo\": {},\n  \"aggregatorName\": \"Count\",\n  \"rendererName\": \"Table\"\n}"
+      },
+      "id" : "358B47AE8BBA437FBCC24EDF740AEE34"
+    },
+    "cell_type" : "code",
+    "source" : "brcas_pred.count\nbrcas_vals.count",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res60: Long = 9\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "9"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 36
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true,
+      "id" : "E151FED793F442E0831D0857F1BD5F75"
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}
